@@ -14,12 +14,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.chog0.weatherappyandexschool.R;
+import com.chog0.weatherappyandexschool.presentation.navigation.RouterFragment;
 
 import butterknife.BindView;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    private RouterFragment routerFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
