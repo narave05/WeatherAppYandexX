@@ -6,7 +6,7 @@
     android:id="@+id/app_bar"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.chog0.weatherappyandexschool.presentation.ui.MainActivity">
+    tools:context="com.chog0.weatherappyandexschool.presentation.ui.activity.MainActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -22,6 +22,12 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_main"/>
+    <FrameLayout
+        android:id="@+id/fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+    </FrameLayout>
 
 </android.support.design.widget.CoordinatorLayout>

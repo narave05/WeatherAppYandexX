@@ -8,7 +8,7 @@ package com.chog0.weatherappyandexschool.presentation.navigation;
 
 public interface Router<T> {
 
-    void pushFragment(T fragment, int containerId);
-    void popFragment();
+    void pushFragment(T fragment);
+    void openFirstFragment(T fragment);
 
 }

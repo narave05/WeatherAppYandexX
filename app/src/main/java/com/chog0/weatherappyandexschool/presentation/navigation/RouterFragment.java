@@ -8,9 +8,11 @@ package com.chog0.weatherappyandexschool.presentation.navigation;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 
 public class RouterFragment implements Router<Fragment> {
 
+    private String fragmentName;
     private FragmentManager fragmentManager;
     private int container;
 
@@ -20,15 +22,27 @@ public class RouterFragment implements Router<Fragment> {
     }
 
     @Override
-    public void pushFragment(Fragment fragment, int container) {
+    public void openFirstFragment(Fragment fragment) {
         fragmentManager
                 .beginTransaction()
-                .add(container, fragment)
+                .replace(container, fragment)
                 .commit();
     }
 
     @Override
-    public void popFragment() {
-        fragmentManager.popBackStack();
+    public void pushFragment(Fragment fragment) {
+
+        String backStateName =  fragment.getClass().getName();
+        String fragmentTag = backStateName;
+
+        boolean fragmentPopped = fragmentManager.popBackStackImmediate (backStateName, 0);
+
+        if (!fragmentPopped && fragmentManager.findFragmentByTag(fragmentTag) == null) { //fragment not in back stack, create it.
+            FragmentTransaction ft = fragmentManager.beginTransaction();
+            ft.replace(container, fragment, fragmentTag);
+            ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+            ft.addToBackStack(backStateName);
+            ft.commit();
+        }
     }
 }
