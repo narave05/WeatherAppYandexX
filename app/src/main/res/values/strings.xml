@@ -7,4 +7,7 @@
     <string name="about">About</string>
     <string name="settings">Settings</string>
     <string name="weather">Weather</string>
+    <string name="api_key" translatable="false">07dba8040acd2433773743ed99bbcbbb</string>
+    <string name="moscow_id" translatable="false">5601538</string>
+    <string name="base_url" translatable="false">http://api.openweathermap.org/data/2.5/</string>
 </resources>
