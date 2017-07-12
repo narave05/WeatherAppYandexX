@@ -6,14 +6,16 @@ package com.chog0.weatherappyandexschool.di;
  */
 
 import com.chog0.weatherappyandexschool.presentation.presenter.MainPresenter;
+import com.chog0.weatherappyandexschool.presentation.ui.activity.MainActivity;
 
 import javax.inject.Singleton;
 
 import dagger.Component;
 
-@Component(modules = RepositoryModule.class)
+@Component(modules = {PresenterModule.class, RepositoryModule.class, NetworkModule.class, ContextModule.class})
 @Singleton
+public interface AppComponent {
 
-public interface RepositoryComponent {
+    void inject(MainActivity mainActivity);
     void inject(MainPresenter mainPresenter);
 }

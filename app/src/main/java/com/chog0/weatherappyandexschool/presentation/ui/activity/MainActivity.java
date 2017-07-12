@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity
             getSupportActionBar().setDisplayShowTitleEnabled(false);
         }
 
-        WeatherApp.getPresenterComponent().inject(this);
+        WeatherApp.getAppComponent().inject(this);
         mainPresenter.setRouterFragment(routerFragment);
 
         if (savedInstanceState == null) {

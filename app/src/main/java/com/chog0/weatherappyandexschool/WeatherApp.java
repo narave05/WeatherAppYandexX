@@ -8,41 +8,35 @@ package com.chog0.weatherappyandexschool;
 
 import android.app.Application;
 
-import com.chog0.weatherappyandexschool.di.DaggerPresenterComponent;
-import com.chog0.weatherappyandexschool.di.DaggerRepositoryComponent;
-import com.chog0.weatherappyandexschool.di.PresenterComponent;
+import com.chog0.weatherappyandexschool.di.AppComponent;
+import com.chog0.weatherappyandexschool.di.ContextModule;
+import com.chog0.weatherappyandexschool.di.DaggerAppComponent;
+import com.chog0.weatherappyandexschool.di.NetworkModule;
 import com.chog0.weatherappyandexschool.di.PresenterModule;
-import com.chog0.weatherappyandexschool.di.RepositoryComponent;
 import com.chog0.weatherappyandexschool.di.RepositoryModule;
-import com.chog0.weatherappyandexschool.repository.Repository;
 
 public class WeatherApp extends Application {
 
-    private static PresenterComponent presenterComponent;
-    private static RepositoryComponent repositoryComponent;
+    private static AppComponent appComponent;
 
-    public static PresenterComponent getPresenterComponent() {
-        return presenterComponent;
-    }
-    public static RepositoryComponent getRepositoryComponent() {
-        return repositoryComponent;
+    public static AppComponent getAppComponent() {
+        return appComponent;
     }
 
     @Override
     public void onCreate() {
         super.onCreate();
-        presenterComponent = buildPresenterComponent();
-        repositoryComponent = buildRepositoryComponent();
+        appComponent = buildAppComponent();
+
     }
 
-    protected PresenterComponent buildPresenterComponent(){
-        return DaggerPresenterComponent.builder()
+    protected AppComponent buildAppComponent(){
+        return DaggerAppComponent.builder()
                 .presenterModule(new PresenterModule())
-                .build();
-    }
-    protected RepositoryComponent buildRepositoryComponent(){
-        return DaggerRepositoryComponent.builder()
                 .repositoryModule(new RepositoryModule())
+                .networkModule(new NetworkModule())
+                .contextModule(new ContextModule(this))
                 .build();
     }
+
 }

@@ -24,7 +24,7 @@ public class MainPresenter {
     RepositoryImpl repository;
 
     public MainPresenter() {
-        WeatherApp.getRepositoryComponent().inject(this);
+        WeatherApp.getAppComponent().inject(this);
     }
 
     private Router<Fragment> routerFragment;

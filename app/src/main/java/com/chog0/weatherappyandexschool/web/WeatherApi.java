@@ -6,15 +6,15 @@ package com.chog0.weatherappyandexschool.web;
  */
 
 
-import com.chog0.weatherappyandexschool.model.WeatherAll;
+import com.chog0.weatherappyandexschool.model.ResponseWeather;
 
 import io.reactivex.Observable;
 import retrofit2.http.Field;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
 
-public interface RetrofitWeather {
+public interface WeatherApi {
 
     @GET("weather?")
-    Observable<WeatherAll> getCurrentWeather(@Query("id") String cityId, @Field("appid") String apiKey);
+    Observable<ResponseWeather> getCurrentWeather(@Query("id") String cityId, @Field("appid") String apiKey);
 }
