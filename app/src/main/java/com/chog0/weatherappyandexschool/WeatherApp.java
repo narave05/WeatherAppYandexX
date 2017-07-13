@@ -11,6 +11,7 @@ import android.app.Application;
 import com.chog0.weatherappyandexschool.di.AppComponent;
 import com.chog0.weatherappyandexschool.di.ContextModule;
 import com.chog0.weatherappyandexschool.di.DaggerAppComponent;
+import com.chog0.weatherappyandexschool.di.InteractorModule;
 import com.chog0.weatherappyandexschool.di.NetworkModule;
 import com.chog0.weatherappyandexschool.di.PresenterModule;
 import com.chog0.weatherappyandexschool.di.RepositoryModule;
@@ -36,6 +37,7 @@ public class WeatherApp extends Application {
                 .repositoryModule(new RepositoryModule())
                 .networkModule(new NetworkModule())
                 .contextModule(new ContextModule(this))
+                .interactorModule(new InteractorModule())
                 .build();
     }
 

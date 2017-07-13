@@ -5,17 +5,23 @@ package com.chog0.weatherappyandexschool.di;
  * @since 0.1
  */
 
+import com.chog0.weatherappyandexschool.interactor.InteractorImpl;
 import com.chog0.weatherappyandexschool.presentation.presenter.MainPresenter;
 import com.chog0.weatherappyandexschool.presentation.ui.activity.MainActivity;
+import com.chog0.weatherappyandexschool.presentation.ui.fragment.WeatherFragment;
+import com.chog0.weatherappyandexschool.repository.RepositoryImpl;
 
 import javax.inject.Singleton;
 
 import dagger.Component;
 
-@Component(modules = {PresenterModule.class, RepositoryModule.class, NetworkModule.class, ContextModule.class})
+@Component(modules = {PresenterModule.class, RepositoryModule.class, NetworkModule.class, ContextModule.class, InteractorModule.class})
 @Singleton
 public interface AppComponent {
 
     void inject(MainActivity mainActivity);
+    void inject(InteractorImpl interactor);
+    void inject(WeatherFragment weatherFragment);
+    void inject(RepositoryImpl repository);
     void inject(MainPresenter mainPresenter);
 }

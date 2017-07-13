@@ -1,4 +1,4 @@
-package com.chog0.weatherappyandexschool.repository;
+package com.chog0.weatherappyandexschool.interactor;
 
 /*
  * @author <a href="mailto: alyonamalchikhina@gmail.com">Alena Malchikhina</a>
@@ -6,13 +6,10 @@ package com.chog0.weatherappyandexschool.repository;
  */
 
 
-import com.chog0.weatherappyandexschool.di.RepositoryModule;
 import com.chog0.weatherappyandexschool.model.ResponseWeather;
 
 import io.reactivex.Observable;
 
-public interface Repository {
-
+public interface Interactor {
     Observable<ResponseWeather> getWeather(String cityId);
-    void storeWeather();
 }
