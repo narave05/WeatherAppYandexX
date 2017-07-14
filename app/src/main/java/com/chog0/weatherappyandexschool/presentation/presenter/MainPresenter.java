@@ -10,6 +10,7 @@ import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 
+import com.chog0.weatherappyandexschool.Constants;
 import com.chog0.weatherappyandexschool.R;
 import com.chog0.weatherappyandexschool.WeatherApp;
 import com.chog0.weatherappyandexschool.interactor.InteractorImpl;
@@ -32,8 +33,6 @@ public class MainPresenter {
 
     @Inject
     InteractorImpl interactor;
-    @Inject
-    Context context;
 
 
     public MainPresenter() {
@@ -64,7 +63,7 @@ public class MainPresenter {
 
 
     public void getWeather(){
-        interactor.getWeather(context.getString(R.string.moscow_id))
+        interactor.getWeather(Constants.MOSCOW_ID)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .onErrorReturn(e -> {
