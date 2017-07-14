@@ -15,21 +15,24 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.arellomobile.mvp.presenter.InjectPresenter;
+import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.chog0.weatherappyandexschool.R;
 import com.chog0.weatherappyandexschool.WeatherApp;
 import com.chog0.weatherappyandexschool.presentation.navigation.Router;
 import com.chog0.weatherappyandexschool.presentation.navigation.RouterFragment;
 import com.chog0.weatherappyandexschool.presentation.presenter.MainPresenter;
+import com.chog0.weatherappyandexschool.presentation.view.MainView;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements MainView, NavigationView.OnNavigationItemSelectedListener {
 
-    @Inject MainPresenter mainPresenter;
+    @InjectPresenter
+    MainPresenter mainPresenter;
 
     @BindView(R.id.drawer_layout) DrawerLayout drawerLayout;
 
@@ -49,7 +52,7 @@ public class MainActivity extends AppCompatActivity
             getSupportActionBar().setDisplayShowTitleEnabled(false);
         }
 
-        WeatherApp.getAppComponent().inject(this);
+
         mainPresenter.setRouterFragment(routerFragment);
 
         if (savedInstanceState == null) {

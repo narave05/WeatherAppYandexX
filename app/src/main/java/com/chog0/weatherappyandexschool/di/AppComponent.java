@@ -19,7 +19,6 @@ import dagger.Component;
 @Singleton
 public interface AppComponent {
 
-    void inject(MainActivity mainActivity);
     void inject(InteractorImpl interactor);
     void inject(WeatherFragment weatherFragment);
     void inject(RepositoryImpl repository);

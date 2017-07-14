@@ -8,6 +8,6 @@ package com.chog0.weatherappyandexschool;
 
 public interface Constants {
     String API_KEY = "07dba8040acd2433773743ed99bbcbbb";
-    String MOSCOW_ID = "5601538";
+    String MOSCOW_ID = "524901";
 
 }

@@ -61,6 +61,9 @@ dependencies {
     compile 'com.squareup.retrofit2:adapter-rxjava2:2.2.0'
 
 
+    compile 'com.arello-mobile:moxy:1.5.3'
+    annotationProcessor 'com.arello-mobile:moxy-compiler:1.5.3'
+
 
     testCompile 'junit:junit:4.12'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.6.0'

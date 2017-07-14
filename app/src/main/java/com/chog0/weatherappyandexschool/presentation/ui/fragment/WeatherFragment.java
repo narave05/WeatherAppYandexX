@@ -11,9 +11,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.chog0.weatherappyandexschool.R;
 import com.chog0.weatherappyandexschool.WeatherApp;
 import com.chog0.weatherappyandexschool.presentation.presenter.MainPresenter;
+import com.chog0.weatherappyandexschool.presentation.presenter.WeatherPresenter;
 import com.chog0.weatherappyandexschool.presentation.ui.WeatherView;
 
 import javax.inject.Inject;
@@ -29,6 +31,9 @@ public class WeatherFragment extends Fragment implements WeatherView {
     @Inject
     MainPresenter mainPresenter;
     private Typeface weatherFont;
+
+    @InjectPresenter
+    WeatherPresenter weatherPresenter;
 
     @BindView(R.id.icon_id_tv) TextView iconTv;
     @BindView(R.id.temp_tv)TextView temperatureTv;

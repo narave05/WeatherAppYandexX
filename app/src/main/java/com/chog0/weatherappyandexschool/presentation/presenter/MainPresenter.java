@@ -6,28 +6,28 @@ package com.chog0.weatherappyandexschool.presentation.presenter;
  */
 
 
-import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 
+import com.arellomobile.mvp.InjectViewState;
+import com.arellomobile.mvp.MvpPresenter;
 import com.chog0.weatherappyandexschool.Constants;
-import com.chog0.weatherappyandexschool.R;
 import com.chog0.weatherappyandexschool.WeatherApp;
 import com.chog0.weatherappyandexschool.interactor.InteractorImpl;
 import com.chog0.weatherappyandexschool.model.ResponseWeather;
+import com.chog0.weatherappyandexschool.presentation.view.MainView;
 import com.chog0.weatherappyandexschool.presentation.navigation.Router;
-import com.chog0.weatherappyandexschool.presentation.navigation.RouterFragment;
 import com.chog0.weatherappyandexschool.presentation.ui.fragment.AboutFragment;
 import com.chog0.weatherappyandexschool.presentation.ui.fragment.SettingsFragment;
 import com.chog0.weatherappyandexschool.presentation.ui.fragment.WeatherFragment;
-import com.chog0.weatherappyandexschool.repository.RepositoryImpl;
 
 import javax.inject.Inject;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
-public class MainPresenter {
+@InjectViewState
+public class MainPresenter extends MvpPresenter<MainView>{
 
     private static final String TAG_PRESENTER = "MainPresenter";
 
