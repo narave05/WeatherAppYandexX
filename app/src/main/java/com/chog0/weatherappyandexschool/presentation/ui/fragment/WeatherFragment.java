@@ -1,25 +1,43 @@
 package com.chog0.weatherappyandexschool.presentation.ui.fragment;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.chog0.weatherappyandexschool.R;
 import com.chog0.weatherappyandexschool.WeatherApp;
 import com.chog0.weatherappyandexschool.presentation.presenter.MainPresenter;
+import com.chog0.weatherappyandexschool.presentation.ui.WeatherView;
 
 import javax.inject.Inject;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
-public class WeatherFragment extends Fragment {
+
+public class WeatherFragment extends Fragment implements WeatherView {
 
 
     @Inject
     MainPresenter mainPresenter;
+    private Typeface weatherFont;
+
+    @BindView(R.id.icon_id_tv) TextView iconTv;
+    @BindView(R.id.temp_tv)TextView temperatureTv;
+    @BindView(R.id.city_id)TextView cityTv;
+    @BindView(R.id.update_time_tv)TextView udateTimeTv;
+    @BindView(R.id.min_temp_tv)TextView minTempTv;
+    @BindView(R.id.max_temp_tv)TextView maxTempTv;
+    private Unbinder unbinder;
+
 
     public WeatherFragment() {
         // Required empty public constructor
@@ -42,8 +60,9 @@ public class WeatherFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-
-        return inflater.inflate(R.layout.fragment_weather, container, false);
+        View view = inflater.inflate(R.layout.fragment_weather, container, false);
+        ButterKnife.bind(this, view);
+        return view;
     }
 
     @Override
@@ -53,12 +72,33 @@ public class WeatherFragment extends Fragment {
     }
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
     }
 
     @Override
-    public void onDetach() {
-        super.onDetach();
+    public void setIcon() {
+
+    }
+
+    @Override
+    public void setTemperature() {
+
+    }
+
+    @Override
+    public void setMinTemperature() {
+
+    }
+
+    @Override
+    public void setMaxTemperature() {
+
+    }
+
+    @Override
+    public void setCity() {
+
     }
 }
