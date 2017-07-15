@@ -70,19 +70,28 @@ public class WeatherFragment extends MvpAppCompatFragment implements WeatherView
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_weather, container, false);
         ButterKnife.bind(this, view);
+
+        weatherPresenter.getWeather();
+        weatherFont = Typeface.createFromAsset(getActivity().getAssets(), "fonts/weather.ttf");
+
+        iconTv.setTypeface(weatherFont);
+
+
         return view;
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        weatherPresenter.getWeather();
+
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        unbinder.unbind();
+        if (unbinder != null) {
+            unbinder.unbind();
+        }
     }
 
     @Override
@@ -91,7 +100,7 @@ public class WeatherFragment extends MvpAppCompatFragment implements WeatherView
         temperatureTv.setText(String.valueOf(weatherDTO.getTemperature().intValue()));
         maxTempTv.setText(String.valueOf(weatherDTO.getMaxTemperature().intValue()));
         minTempTv.setText(String.valueOf(weatherDTO.getMinTemperature().intValue()));
-        iconTv.setText(weatherDTO.getIcon());
+        setWeatherIcon(weatherDTO.getId(), weatherDTO.getSunrise(), weatherDTO.getSunset());
         udateTimeTv.setText(timeFormated(weatherDTO.getTime()));
     }
 
@@ -110,5 +119,33 @@ public class WeatherFragment extends MvpAppCompatFragment implements WeatherView
             Log.e(this.getClass().getName(), "timeFormated: ", ex.getCause());
             return getString(R.string.impossible_convert_data);
         }
+    }
+    private void setWeatherIcon(int actualId, long sunrise, long sunset){
+        int id = actualId / 100;
+        String icon = "";
+        if(actualId == 800){
+            long currentTime = new Date().getTime();
+            if(currentTime>=sunrise && currentTime<sunset) {
+                icon = getActivity().getString(R.string.weather_sunny);
+            } else {
+                icon = getActivity().getString(R.string.weather_clear_night);
+            }
+        } else {
+            switch(id) {
+                case 2 : icon = getActivity().getString(R.string.weather_thunder);
+                    break;
+                case 3 : icon = getActivity().getString(R.string.weather_drizzle);
+                    break;
+                case 7 : icon = getActivity().getString(R.string.weather_foggy);
+                    break;
+                case 8 : icon = getActivity().getString(R.string.weather_cloudy);
+                    break;
+                case 6 : icon = getActivity().getString(R.string.weather_snowy);
+                    break;
+                case 5 : icon = getActivity().getString(R.string.weather_rainy);
+                    break;
+            }
+        }
+        iconTv.setText(icon);
     }
 }

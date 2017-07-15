@@ -16,6 +16,21 @@ public class WeatherDTO {
     private int humidity;
     private String city;
     public long time;
+    private int id;
+    private long sunrise;
+    private long sunset;
+
+    public int getId() {
+        return id;
+    }
+
+    public long getSunrise() {
+        return sunrise;
+    }
+
+    public long getSunset() {
+        return sunset;
+    }
 
     public long getTime() {
         return time;
@@ -105,6 +120,19 @@ public class WeatherDTO {
         }
         public Builder setTime(long time){
             WeatherDTO.this.time = time;
+            return this;
+        }
+
+        public Builder setId(int id){
+            WeatherDTO.this.id = id;
+            return this;
+        }
+        public Builder setSunrise(long sunrise){
+            WeatherDTO.this.sunrise = sunrise;
+            return this;
+        }
+        public Builder setSunset(long sunset){
+            WeatherDTO.this.sunset = sunset;
             return this;
         }
         public WeatherDTO build(){

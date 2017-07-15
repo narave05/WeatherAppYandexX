@@ -41,6 +41,8 @@ public class InteractorImpl implements Interactor {
                 .setHumidity(responseWeather.getMainInfo().getHumidity())
                 .setPressure(responseWeather.getMainInfo().getPressure())
                 .setTime(System.currentTimeMillis())
+
+                .setId(responseWeather.getWeather().get(0).getId())
                 .build();
     }
 
