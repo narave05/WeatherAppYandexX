@@ -6,10 +6,9 @@ package com.chog0.weatherappyandexschool.web;
  */
 
 
-import com.chog0.weatherappyandexschool.model.ResponseWeather;
+import com.chog0.weatherappyandexschool.model.ResponseModel.ResponseWeather;
 
 import io.reactivex.Observable;
-import retrofit2.http.Field;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
 

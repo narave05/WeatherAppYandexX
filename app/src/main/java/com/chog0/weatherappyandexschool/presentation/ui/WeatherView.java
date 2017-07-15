@@ -6,11 +6,10 @@ package com.chog0.weatherappyandexschool.presentation.ui;
  */
 
 
-public interface WeatherView {
+import com.arellomobile.mvp.MvpView;
+import com.chog0.weatherappyandexschool.model.app_model.WeatherDTO;
 
-    void setIcon();
-    void setTemperature();
-    void setMinTemperature();
-    void setMaxTemperature();
-    void setCity();
+public interface WeatherView extends MvpView{
+    void showData(WeatherDTO weatherDTO);
+    void showError(Throwable throwable);
 }

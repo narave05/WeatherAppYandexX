@@ -1,8 +1,9 @@
-package com.chog0.weatherappyandexschool.model;
+package com.chog0.weatherappyandexschool.model.ResponseModel;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -15,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
         "coordinates",
         "weather",
         "base",
-        "mainInfo",
+        "main",
         "wind",
         "clouds",
         "dt",
@@ -32,7 +33,7 @@ public class ResponseWeather {
     private List<Weather> weather = null;
     @JsonProperty("base")
     private String base;
-    @JsonProperty("mainInfo")
+    @JsonProperty("main")
     private MainInfo mainInfo;
     @JsonProperty("wind")
     private Wind wind;
@@ -81,12 +82,12 @@ public class ResponseWeather {
         this.base = base;
     }
 
-    @JsonProperty("mainInfo")
+    @JsonProperty("main")
     public MainInfo getMainInfo() {
         return mainInfo;
     }
 
-    @JsonProperty("mainInfo")
+    @JsonProperty("main")
     public void setMainInfo(MainInfo mainInfo) {
         this.mainInfo = mainInfo;
     }

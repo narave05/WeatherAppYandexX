@@ -6,12 +6,9 @@ package com.chog0.weatherappyandexschool.repository;
  */
 
 
-import android.content.Context;
-
 import com.chog0.weatherappyandexschool.Constants;
-import com.chog0.weatherappyandexschool.R;
 import com.chog0.weatherappyandexschool.WeatherApp;
-import com.chog0.weatherappyandexschool.model.ResponseWeather;
+import com.chog0.weatherappyandexschool.model.ResponseModel.ResponseWeather;
 import com.chog0.weatherappyandexschool.web.WeatherApi;
 
 import javax.inject.Inject;

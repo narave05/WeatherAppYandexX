@@ -1,4 +1,4 @@
-package com.chog0.weatherappyandexschool.model;
+package com.chog0.weatherappyandexschool.model.ResponseModel;
 
 import java.util.HashMap;
 import java.util.Map;

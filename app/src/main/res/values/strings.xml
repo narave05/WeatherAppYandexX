@@ -9,4 +9,7 @@
     <string name="weather">Weather</string>
     <string name="api_key" translatable="false">07dba8040acd2433773743ed99bbcbbb</string>
     <string name="moscow_id" translatable="false">524901</string>
+    <string name="impossible_to_get_weather">Impossible to get weather</string>
+    <string name="moscow">Moscow</string>
+    <string name="impossible_convert_data">Не удалось сконвертировать данные</string>
 </resources>

@@ -6,8 +6,7 @@ package com.chog0.weatherappyandexschool.repository;
  */
 
 
-import com.chog0.weatherappyandexschool.di.RepositoryModule;
-import com.chog0.weatherappyandexschool.model.ResponseWeather;
+import com.chog0.weatherappyandexschool.model.ResponseModel.ResponseWeather;
 
 import io.reactivex.Observable;
 

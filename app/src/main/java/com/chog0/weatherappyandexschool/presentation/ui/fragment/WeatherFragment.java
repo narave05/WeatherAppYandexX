@@ -1,22 +1,29 @@
 package com.chog0.weatherappyandexschool.presentation.ui.fragment;
 
-import android.content.Context;
 import android.graphics.Typeface;
-import android.net.Uri;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.chog0.weatherappyandexschool.R;
 import com.chog0.weatherappyandexschool.WeatherApp;
+import com.chog0.weatherappyandexschool.model.app_model.WeatherDTO;
 import com.chog0.weatherappyandexschool.presentation.presenter.MainPresenter;
 import com.chog0.weatherappyandexschool.presentation.presenter.WeatherPresenter;
 import com.chog0.weatherappyandexschool.presentation.ui.WeatherView;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 import javax.inject.Inject;
 
@@ -25,11 +32,8 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 
-public class WeatherFragment extends Fragment implements WeatherView {
+public class WeatherFragment extends MvpAppCompatFragment implements WeatherView{
 
-
-    @Inject
-    MainPresenter mainPresenter;
     private Typeface weatherFont;
 
     @InjectPresenter
@@ -58,7 +62,6 @@ public class WeatherFragment extends Fragment implements WeatherView {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        WeatherApp.getAppComponent().inject(this);
     }
 
     @Override
@@ -73,7 +76,7 @@ public class WeatherFragment extends Fragment implements WeatherView {
     @Override
     public void onResume() {
         super.onResume();
-        mainPresenter.getWeather();
+        weatherPresenter.getWeather();
     }
 
     @Override
@@ -83,27 +86,29 @@ public class WeatherFragment extends Fragment implements WeatherView {
     }
 
     @Override
-    public void setIcon() {
-
+    public void showData(WeatherDTO weatherDTO) {
+        cityTv.setText(getString(R.string.moscow));
+        temperatureTv.setText(String.valueOf(weatherDTO.getTemperature().intValue()));
+        maxTempTv.setText(String.valueOf(weatherDTO.getMaxTemperature().intValue()));
+        minTempTv.setText(String.valueOf(weatherDTO.getMinTemperature().intValue()));
+        iconTv.setText(weatherDTO.getIcon());
+        udateTimeTv.setText(timeFormated(weatherDTO.getTime()));
     }
 
     @Override
-    public void setTemperature() {
-
+    public void showError(Throwable throwable) {
+        Toast.makeText(getActivity(), getString(R.string.impossible_to_get_weather), Toast.LENGTH_LONG).show();
     }
+    private String timeFormated(long timeStamp){
 
-    @Override
-    public void setMinTemperature() {
-
-    }
-
-    @Override
-    public void setMaxTemperature() {
-
-    }
-
-    @Override
-    public void setCity() {
-
+        try{
+            DateFormat sdf = new SimpleDateFormat("dd.MM hh:mm:ss", Locale.getDefault());
+            Date netDate = (new Date(timeStamp));
+            return sdf.format(netDate);
+        }
+        catch(Exception ex){
+            Log.e(this.getClass().getName(), "timeFormated: ", ex.getCause());
+            return getString(R.string.impossible_convert_data);
+        }
     }
 }

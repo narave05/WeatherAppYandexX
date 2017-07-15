@@ -5,8 +5,10 @@ package com.chog0.weatherappyandexschool.di;
  * @since 0.1
  */
 
+import com.chog0.weatherappyandexschool.WeatherApp;
 import com.chog0.weatherappyandexschool.interactor.InteractorImpl;
 import com.chog0.weatherappyandexschool.presentation.presenter.MainPresenter;
+import com.chog0.weatherappyandexschool.presentation.presenter.WeatherPresenter;
 import com.chog0.weatherappyandexschool.presentation.ui.activity.MainActivity;
 import com.chog0.weatherappyandexschool.presentation.ui.fragment.WeatherFragment;
 import com.chog0.weatherappyandexschool.repository.RepositoryImpl;
@@ -19,8 +21,8 @@ import dagger.Component;
 @Singleton
 public interface AppComponent {
 
+
     void inject(InteractorImpl interactor);
-    void inject(WeatherFragment weatherFragment);
     void inject(RepositoryImpl repository);
-    void inject(MainPresenter mainPresenter);
+    void inject(WeatherPresenter weatherPresenter);
 }

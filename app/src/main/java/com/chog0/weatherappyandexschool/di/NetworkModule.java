@@ -5,7 +5,6 @@ package com.chog0.weatherappyandexschool.di;
  * @since 0.1
  */
 
-import com.chog0.weatherappyandexschool.model.Weather;
 import com.chog0.weatherappyandexschool.web.WeatherApi;
 
 import java.util.concurrent.TimeUnit;

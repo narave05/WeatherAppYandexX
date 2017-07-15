@@ -3,4 +3,7 @@
     <string name="about">О приложении</string>
     <string name="settings">Настройки</string>
     <string name="weather">Погода</string>
+    <string name="impossible_to_get_weather">Не удалось получить данные</string>
+    <string name="moscow">Москва</string>
+    <string name="impossible_convert_data">Не удалось сконвертировать данные</string>
 </resources>
