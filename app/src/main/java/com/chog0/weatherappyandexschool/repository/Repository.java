@@ -17,4 +17,7 @@ public interface Repository {
     Observable<String> getWeather(String cityId);
     void storeWeather(String response);
 
+    void setWeatherUpdatePeriod(int period);
+    int getWeatherUpdatePeriod();
+
 }

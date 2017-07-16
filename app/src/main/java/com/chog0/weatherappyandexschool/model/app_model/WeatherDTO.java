@@ -12,7 +12,7 @@ public class WeatherDTO {
     private Double minTemperature;
     private Double maxTemperature;
     private Double pressure;
-    private int wind;
+    private Double wind;
     private int humidity;
     private String city;
     public long time;
@@ -68,7 +68,7 @@ public class WeatherDTO {
     }
 
 
-    public int getWind() {
+    public Double getWind() {
         return wind;
     }
 
@@ -102,7 +102,7 @@ public class WeatherDTO {
             WeatherDTO.this.minTemperature = temp;
             return this;
         }
-        public Builder setWind(int wind){
+        public Builder setWind(Double wind){
             WeatherDTO.this.wind = wind;
             return this;
         }

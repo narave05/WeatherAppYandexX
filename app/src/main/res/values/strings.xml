@@ -29,9 +29,16 @@
 
     <string name="celsius" translatable="false"> °C</string>
     <string name="farengates" translatable="false"> °F</string>
-    <string name="hpa">hPa</string>
-    <string name="mmhg">mmHg</string>
-    <string name="percents" translatable="false">%</string>
-    <string name="msec">m/s</string>
+    <string name="hpa"> hPa</string>
+    <string name="mmhg"> mmHg</string>
+    <string name="percents" translatable="false"> %</string>
+    <string name="msec"> m/s</string>
+    <string name="_15_min">15 min</string>
+    <string name="_30_min">30 min</string>
+    <string name="_45_min">45 min</string>
+    <string name="_3_hour">3 hours</string>
+    <string name="_1_hour">1 hour</string>
+    <string name="weather_update">Weather update</string>
+    <string name="dont_update">Do not update</string>
 
 </resources>

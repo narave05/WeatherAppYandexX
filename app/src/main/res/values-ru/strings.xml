@@ -13,4 +13,11 @@
     <string name="msec">м/с</string>
     <string name="mmhg">мм.рт.ст.</string>
     <string name="hpa">гПа</string>
+    <string name="_15_min">15 минут</string>
+    <string name="_30_min">30 минут</string>
+    <string name="_45_min">45 минут</string>
+    <string name="_3_hour">3 часа</string>
+    <string name="_1_hour">1 час</string>
+    <string name="weather_update">Обновление погоды</string>
+    <string name="dont_update">Только вручную</string>
 </resources>

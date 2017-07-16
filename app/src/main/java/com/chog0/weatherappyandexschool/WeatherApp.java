@@ -20,6 +20,7 @@ import com.chog0.weatherappyandexschool.di.RepositoryModule;
 import com.chog0.weatherappyandexschool.job.WeatherJobCreator;
 import com.chog0.weatherappyandexschool.job.WeatherSyncJob;
 import com.chog0.weatherappyandexschool.repository.RepositoryImpl;
+import com.chog0.weatherappyandexschool.settings.PreferencesManager;
 import com.evernote.android.job.JobManager;
 import com.facebook.stetho.Stetho;
 
@@ -29,6 +30,8 @@ public class WeatherApp extends Application {
 
     @Inject
     RepositoryImpl repository;
+    @Inject
+    PreferencesManager preferencesManager;
 
     private static AppComponent appComponent;
     public static AppComponent getAppComponent() {
@@ -45,11 +48,18 @@ public class WeatherApp extends Application {
 
         appComponent.inject(this);
 
-        //TODO change time from prefs
         JobManager manager = JobManager.create(context);
-        manager.addJobCreator(new WeatherJobCreator(repository));
-        WeatherSyncJob.scheduleJob(15);
 
+        runJob(manager);
+    }
+
+    private void runJob(JobManager manager) {
+        if (preferencesManager.getPeriod() != 0) {
+            manager.addJobCreator(new WeatherJobCreator(repository));
+            WeatherSyncJob.scheduleJob(repository.getWeatherUpdatePeriod());
+        }else {
+            manager.cancelAllForTag(WeatherSyncJob.TAG);
+        }
     }
 
     protected AppComponent buildAppComponent(){

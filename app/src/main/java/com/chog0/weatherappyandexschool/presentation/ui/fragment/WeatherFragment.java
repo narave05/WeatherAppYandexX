@@ -110,14 +110,14 @@ public class WeatherFragment extends MvpAppCompatFragment implements WeatherView
     @Override
     public void showData(WeatherDTO weatherDTO) {
         cityTv.setText(getString(R.string.moscow));
-        temperatureTv.setText(String.valueOf(weatherDTO.getTemperature().intValue()));
+        temperatureTv.setText(String.valueOf(weatherDTO.getTemperature().intValue()) + getString(R.string.celsius));
         maxTempTv.setText(getString(R.string.temp) + " " + String.valueOf(weatherDTO.getMaxTemperature().intValue()) + getString(R.string.celsius));
         minTempTv.setText(getString(R.string.temp) + " " +String.valueOf(weatherDTO.getMinTemperature().intValue()) + getString(R.string.celsius));
         setWeatherIcon(weatherDTO.getId(), weatherDTO.getSunrise(), weatherDTO.getSunset());
         udateTimeTv.setText(timeFormated(weatherDTO.getTime()));
-        pressureTv.setText(getString(R.string.pressure) + " " + String.valueOf(weatherDTO.getPressure()) + getString(R.string.mmhg));
-        windTv.setText(getString(R.string.wind) + " " + String.valueOf(weatherDTO.getWind()) + getString(R.string.msec));
-        humidityTv.setText(getString(R.string.humidity) + " " + String.valueOf(weatherDTO.getHumidity()) + getString(R.string.percents));
+        pressureTv.setText(getString(R.string.pressure) + " " + String.valueOf(weatherDTO.getPressure().intValue()) + " " + getString(R.string.mmhg));
+        windTv.setText(getString(R.string.wind) + " " + String.valueOf(weatherDTO.getWind()) + " " + getString(R.string.msec));
+        humidityTv.setText(getString(R.string.humidity) + " " + String.valueOf(weatherDTO.getHumidity()) + " " + getString(R.string.percents));
         refreshLayout.setRefreshing(false);
     }
 
@@ -141,14 +141,7 @@ public class WeatherFragment extends MvpAppCompatFragment implements WeatherView
     private void setWeatherIcon(int actualId, long sunrise, long sunset){
         int id = actualId / 100;
         String icon = "";
-        if(actualId == 800){
-            long currentTime = new Date().getTime();
-            if(currentTime>=sunrise && currentTime<sunset) {
-                icon = getActivity().getString(R.string.weather_sunny);
-            } else {
-                icon = getActivity().getString(R.string.weather_clear_night);
-            }
-        } else {
+
             switch(id) {
                 case 2 : icon = getActivity().getString(R.string.weather_thunder);
                     break;
@@ -162,7 +155,6 @@ public class WeatherFragment extends MvpAppCompatFragment implements WeatherView
                     break;
                 case 5 : icon = getActivity().getString(R.string.weather_rainy);
                     break;
-            }
         }
         iconTv.setText(icon);
     }

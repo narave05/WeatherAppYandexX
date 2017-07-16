@@ -24,6 +24,8 @@ import retrofit2.Response;
 
 public class InteractorImpl implements Interactor {
 
+    public static final int K = 273;
+    public static final double MMHG = 0.75006375541921;
     @Inject
     RepositoryImpl repository;
     @Inject
@@ -50,12 +52,13 @@ public class InteractorImpl implements Interactor {
         return WeatherDTO.newBuilder()
                 .setCity(Constants.MOSCOW_ID)
                 .setIcon(responseWeather.getWeather().get(0).getIcon())
-                .setTemperature(responseWeather.getMainInfo().getTemp())
-                .setMaxTemperature(responseWeather.getMainInfo().getTempMax())
-                .setMinTemperature(responseWeather.getMainInfo().getTempMin())
+                .setTemperature(responseWeather.getMainInfo().getTemp() - K)
+                .setMaxTemperature(responseWeather.getMainInfo().getTempMax() - K)
+                .setMinTemperature(responseWeather.getMainInfo().getTempMin() - K)
                 .setHumidity(responseWeather.getMainInfo().getHumidity())
-                .setPressure(responseWeather.getMainInfo().getPressure())
+                .setPressure(responseWeather.getMainInfo().getPressure() * MMHG)
                 .setTime(System.currentTimeMillis())
+                .setWind(responseWeather.getWind().getSpeed())
                 .setId(responseWeather.getWeather().get(0).getId())
                 .build();
     }
@@ -69,7 +72,6 @@ public class InteractorImpl implements Interactor {
             //TODO handle this shit
             e.printStackTrace();
         }
-
         return builWeather(responseWeather);
 
     }

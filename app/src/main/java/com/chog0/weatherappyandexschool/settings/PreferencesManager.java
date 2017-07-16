@@ -15,6 +15,7 @@ import java.util.Locale;
 
 public class PreferencesManager {
     private static final String RESPONSE = "RESPONSE";
+    private static final String PERIOD = "PERIOD";
 
     private SharedPreferences sharedPreferences;
 
@@ -31,5 +32,13 @@ public class PreferencesManager {
         return sharedPreferences.getString(RESPONSE, "");
     }
 
+    public void savePeriodUpdate(int period){
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt(PERIOD, period);
+        editor.apply();
+    }
+    public int getPeriod() {
+        return sharedPreferences.getInt(PERIOD, 0);
+    }
 
 }

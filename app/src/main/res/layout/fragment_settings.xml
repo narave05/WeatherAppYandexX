@@ -1,13 +1,81 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:tools="http://schemas.android.com/tools"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
-             tools:context="com.chog0.weatherappyandexschool.presentation.ui.fragment.SettingsFragment">
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:fillViewport="true">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/settings"/>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                             xmlns:tools="http://schemas.android.com/tools"
+                                             android:layout_width="match_parent"
+                                             android:padding="@dimen/margin_16"
+                                             android:layout_height="wrap_content"
+                                             xmlns:app="http://schemas.android.com/apk/res-auto"
+                                             tools:context="com.chog0.weatherappyandexschool.presentation.ui.fragment.SettingsFragment">
 
-</FrameLayout>
+<TextView
+    android:id="@+id/title_tv"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:textSize="@dimen/text_size_20"
+    android:text="@string/weather_update"
+    android:paddingBottom="@dimen/margin_16"
+    app:layout_constraintLeft_toLeftOf="parent"
+    app:layout_constraintTop_toTopOf="parent"/>
+
+
+    <RadioGroup
+        android:id="@+id/radio_group"
+        android:layout_width="336dp"
+        android:gravity="center_horizontal"
+        android:layoutDirection="rtl"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/title_tv"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="8dp"
+        app:layout_constraintRight_toRightOf="parent">
+        <RadioButton
+            android:id="@+id/_15_min"
+            android:layout_marginTop="@dimen/margin_8"
+            android:layout_marginBottom="@dimen/margin_8"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/_15_min"/>
+        <RadioButton
+            android:id="@+id/_30_min"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_8"
+            android:layout_marginBottom="@dimen/margin_8"
+            android:text="@string/_30_min"/>
+        <RadioButton
+            android:id="@+id/_45_min"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_8"
+            android:layout_marginBottom="@dimen/margin_8"
+            android:text="@string/_45_min"/>
+        <RadioButton
+            android:id="@+id/_1_h"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_8"
+            android:layout_marginBottom="@dimen/margin_8"
+            android:text="@string/_1_hour"/>
+        <RadioButton
+            android:id="@+id/_3_h"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_8"
+            android:layout_marginBottom="@dimen/margin_8"
+            android:text="@string/_3_hour"/>
+        <RadioButton
+            android:id="@+id/dont_update"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_8"
+            android:layout_marginBottom="@dimen/margin_8"
+            android:text="@string/dont_update"/>
+    </RadioGroup>
+
+</android.support.constraint.ConstraintLayout>
+</ScrollView>

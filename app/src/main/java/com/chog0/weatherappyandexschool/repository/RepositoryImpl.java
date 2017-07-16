@@ -38,4 +38,15 @@ public class RepositoryImpl implements Repository {
     public void storeWeather(String response) {
         preferencesManager.saveResponse(response);
     }
+
+    @Override
+    public void setWeatherUpdatePeriod(int period) {
+        preferencesManager.savePeriodUpdate(period);
+    }
+
+    @Override
+    public int getWeatherUpdatePeriod() {
+        return preferencesManager.getPeriod();
+    }
+
 }
