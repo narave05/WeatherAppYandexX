@@ -3,6 +3,7 @@ package com.chog0.weatherappyandexschool.presentation.ui.fragment;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
@@ -50,6 +51,8 @@ public class WeatherFragment extends MvpAppCompatFragment implements WeatherView
     @BindView(R.id.wind_tv)TextView windTv;
     @BindView(R.id.humidity_tv)TextView humidityTv;
     @BindView(R.id.pressure_tv)TextView pressureTv;
+    @BindView(R.id.error_tv)TextView errorTv;
+    @BindView(R.id.constrain_weather)ConstraintLayout container;
     private Unbinder unbinder;
 
 
@@ -77,6 +80,7 @@ public class WeatherFragment extends MvpAppCompatFragment implements WeatherView
         ButterKnife.bind(this, view);
 
         refreshLayout.setOnRefreshListener(() ->{
+            errorTv.setVisibility(View.GONE);
             weatherPresenter.getWeather();
         });
         refreshLayout.setColorSchemeResources(R.color.colorAccent);
@@ -109,11 +113,13 @@ public class WeatherFragment extends MvpAppCompatFragment implements WeatherView
 
     @Override
     public void showData(WeatherDTO weatherDTO) {
+        container.setVisibility(View.VISIBLE);
+        errorTv.setVisibility(View.GONE);
         cityTv.setText(getString(R.string.moscow));
         temperatureTv.setText(String.valueOf(weatherDTO.getTemperature().intValue()) + getString(R.string.celsius));
         maxTempTv.setText(getString(R.string.temp) + " " + String.valueOf(weatherDTO.getMaxTemperature().intValue()) + getString(R.string.celsius));
         minTempTv.setText(getString(R.string.temp) + " " +String.valueOf(weatherDTO.getMinTemperature().intValue()) + getString(R.string.celsius));
-        setWeatherIcon(weatherDTO.getId(), weatherDTO.getSunrise(), weatherDTO.getSunset());
+        setWeatherIcon(weatherDTO.getId());
         udateTimeTv.setText(timeFormated(weatherDTO.getTime()));
         pressureTv.setText(getString(R.string.pressure) + " " + String.valueOf(weatherDTO.getPressure().intValue()) + " " + getString(R.string.mmhg));
         windTv.setText(getString(R.string.wind) + " " + String.valueOf(weatherDTO.getWind()) + " " + getString(R.string.msec));
@@ -122,8 +128,10 @@ public class WeatherFragment extends MvpAppCompatFragment implements WeatherView
     }
 
     @Override
-    public void showError(Throwable throwable) {
-        Toast.makeText(getActivity(), getString(R.string.impossible_to_get_weather), Toast.LENGTH_LONG).show();
+    public void showError(String throwable) {
+        refreshLayout.setRefreshing(false);
+        container.setVisibility(View.GONE);
+        errorTv.setVisibility(View.VISIBLE);
     }
 
     private String timeFormated(long timeStamp){
@@ -138,7 +146,7 @@ public class WeatherFragment extends MvpAppCompatFragment implements WeatherView
             return getString(R.string.impossible_convert_data);
         }
     }
-    private void setWeatherIcon(int actualId, long sunrise, long sunset){
+    private void setWeatherIcon(int actualId){
         int id = actualId / 100;
         String icon = "";
 

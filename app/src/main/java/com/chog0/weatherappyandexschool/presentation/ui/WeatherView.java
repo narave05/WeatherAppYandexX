@@ -11,5 +11,5 @@ import com.chog0.weatherappyandexschool.model.app_model.WeatherDTO;
 
 public interface WeatherView extends MvpView{
     void showData(WeatherDTO weatherDTO);
-    void showError(Throwable throwable);
+    void showError(String e);
 }

@@ -10,6 +10,7 @@ import com.chog0.weatherappyandexschool.Constants;
 import com.chog0.weatherappyandexschool.WeatherApp;
 import com.chog0.weatherappyandexschool.model.ResponseModel.ResponseWeather;
 import com.chog0.weatherappyandexschool.model.app_model.WeatherDTO;
+import com.chog0.weatherappyandexschool.presentation.presenter.WeatherPresenter;
 import com.chog0.weatherappyandexschool.repository.RepositoryImpl;
 import com.chog0.weatherappyandexschool.settings.PreferencesManager;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -63,14 +64,15 @@ public class InteractorImpl implements Interactor {
                 .build();
     }
     @Override
-    public WeatherDTO parseWeather() {
+    public WeatherDTO parseWeather(WeatherPresenter presenter) {
 
-        ResponseWeather responseWeather = null;
+        ResponseWeather responseWeather;
         try {
             responseWeather = mapper.readValue(preferencesManager.getResponse(), ResponseWeather.class);
         } catch (IOException e) {
             //TODO handle this shit
-            e.printStackTrace();
+            presenter.showError(e.getMessage());
+            return null;
         }
         return builWeather(responseWeather);
 

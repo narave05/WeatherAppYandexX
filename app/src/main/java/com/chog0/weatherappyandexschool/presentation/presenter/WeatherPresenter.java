@@ -6,6 +6,7 @@ package com.chog0.weatherappyandexschool.presentation.presenter;
  */
 
 
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.arellomobile.mvp.InjectViewState;
@@ -40,6 +41,10 @@ public class WeatherPresenter extends MvpPresenter<WeatherView> {
         interactor.getWeather(Constants.MOSCOW_ID)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
+                .onErrorReturn(e -> {
+                    showError(e.getMessage());
+                    return e.getMessage();
+                })
                 .subscribe(response -> {
                     Log.d(TAG_PRESENTER, "getWeather: weather come");
                     interactor.saveWeather(response);
@@ -49,14 +54,17 @@ public class WeatherPresenter extends MvpPresenter<WeatherView> {
 
     public void parseWeatherFromSP(){
 
-        showWeather(interactor.parseWeather());
+        showWeather(interactor.parseWeather(this));
     }
 
     public void showWeather(WeatherDTO weatherDTO) {
-        getViewState().showData(weatherDTO);
+        if (weatherDTO != null) {
+            getViewState().showData(weatherDTO);
+        }
+
     }
 
-    public void showError(Throwable e) {
+    public void showError(String e) {
         getViewState().showError(e);
     }
 

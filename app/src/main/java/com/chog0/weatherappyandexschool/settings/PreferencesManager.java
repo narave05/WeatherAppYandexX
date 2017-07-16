@@ -11,11 +11,11 @@ import android.content.SharedPreferences;
 
 import com.chog0.weatherappyandexschool.WeatherApp;
 
-import java.util.Locale;
-
 public class PreferencesManager {
     private static final String RESPONSE = "RESPONSE";
     private static final String PERIOD = "PERIOD";
+    private static final String ID = "ID";
+    public static final int DONT_UPDATE_BUTTON_ID = 2131558554;
 
     private SharedPreferences sharedPreferences;
 
@@ -39,6 +39,14 @@ public class PreferencesManager {
     }
     public int getPeriod() {
         return sharedPreferences.getInt(PERIOD, 0);
+    }
+    public void saveRadioButtonId(int id){
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt(ID, id);
+        editor.apply();
+    }
+    public int getRadioButtonId() {
+        return sharedPreferences.getInt(ID, DONT_UPDATE_BUTTON_ID);
     }
 
 }

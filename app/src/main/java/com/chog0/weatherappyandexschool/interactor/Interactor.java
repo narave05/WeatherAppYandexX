@@ -8,6 +8,7 @@ package com.chog0.weatherappyandexschool.interactor;
 
 import com.chog0.weatherappyandexschool.model.ResponseModel.ResponseWeather;
 import com.chog0.weatherappyandexschool.model.app_model.WeatherDTO;
+import com.chog0.weatherappyandexschool.presentation.presenter.WeatherPresenter;
 
 import io.reactivex.Observable;
 import retrofit2.Response;
@@ -17,5 +18,5 @@ public interface Interactor {
 
     void saveWeather(String response);
 
-    WeatherDTO parseWeather();
+    WeatherDTO parseWeather(WeatherPresenter weatherPresenter);
 }
