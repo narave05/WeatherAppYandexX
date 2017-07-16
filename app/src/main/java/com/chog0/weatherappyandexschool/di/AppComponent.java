@@ -5,6 +5,7 @@ package com.chog0.weatherappyandexschool.di;
  * @since 0.1
  */
 
+import com.chog0.weatherappyandexschool.WeatherApp;
 import com.chog0.weatherappyandexschool.interactor.InteractorImpl;
 import com.chog0.weatherappyandexschool.presentation.presenter.WeatherPresenter;
 import com.chog0.weatherappyandexschool.repository.RepositoryImpl;
@@ -23,4 +24,5 @@ public interface AppComponent {
     void inject(PreferencesManager preferencesManager);
     void inject(RepositoryImpl repository);
     void inject(WeatherPresenter weatherPresenter);
+    void inject(WeatherApp weatherApp);
 }

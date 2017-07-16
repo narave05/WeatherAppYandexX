@@ -4,6 +4,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -45,6 +46,10 @@ public class WeatherFragment extends MvpAppCompatFragment implements WeatherView
     @BindView(R.id.update_time_tv)TextView udateTimeTv;
     @BindView(R.id.min_temp_tv)TextView minTempTv;
     @BindView(R.id.max_temp_tv)TextView maxTempTv;
+    @BindView(R.id.swipeContainer)SwipeRefreshLayout refreshLayout;
+    @BindView(R.id.wind_tv)TextView windTv;
+    @BindView(R.id.humidity_tv)TextView humidityTv;
+    @BindView(R.id.pressure_tv)TextView pressureTv;
     private Unbinder unbinder;
 
 
@@ -71,12 +76,20 @@ public class WeatherFragment extends MvpAppCompatFragment implements WeatherView
         View view = inflater.inflate(R.layout.fragment_weather, container, false);
         ButterKnife.bind(this, view);
 
+        refreshLayout.setOnRefreshListener(() ->{
+            weatherPresenter.getWeather();
+        });
+        refreshLayout.setColorSchemeResources(R.color.colorAccent);
+
         weatherPresenter.parseWeatherFromSP();
         weatherFont = Typeface.createFromAsset(getActivity().getAssets(), "fonts/weather.ttf");
 
         iconTv.setTypeface(weatherFont);
-
-
+        pressureTv.setTypeface(weatherFont);
+        windTv.setTypeface(weatherFont);
+        humidityTv.setTypeface(weatherFont);
+        maxTempTv.setTypeface(weatherFont);
+        minTempTv.setTypeface(weatherFont);
         return view;
     }
 
@@ -98,16 +111,21 @@ public class WeatherFragment extends MvpAppCompatFragment implements WeatherView
     public void showData(WeatherDTO weatherDTO) {
         cityTv.setText(getString(R.string.moscow));
         temperatureTv.setText(String.valueOf(weatherDTO.getTemperature().intValue()));
-        maxTempTv.setText(String.valueOf(weatherDTO.getMaxTemperature().intValue()));
-        minTempTv.setText(String.valueOf(weatherDTO.getMinTemperature().intValue()));
+        maxTempTv.setText(getString(R.string.temp) + " " + String.valueOf(weatherDTO.getMaxTemperature().intValue()) + getString(R.string.celsius));
+        minTempTv.setText(getString(R.string.temp) + " " +String.valueOf(weatherDTO.getMinTemperature().intValue()) + getString(R.string.celsius));
         setWeatherIcon(weatherDTO.getId(), weatherDTO.getSunrise(), weatherDTO.getSunset());
         udateTimeTv.setText(timeFormated(weatherDTO.getTime()));
+        pressureTv.setText(getString(R.string.pressure) + " " + String.valueOf(weatherDTO.getPressure()) + getString(R.string.mmhg));
+        windTv.setText(getString(R.string.wind) + " " + String.valueOf(weatherDTO.getWind()) + getString(R.string.msec));
+        humidityTv.setText(getString(R.string.humidity) + " " + String.valueOf(weatherDTO.getHumidity()) + getString(R.string.percents));
+        refreshLayout.setRefreshing(false);
     }
 
     @Override
     public void showError(Throwable throwable) {
         Toast.makeText(getActivity(), getString(R.string.impossible_to_get_weather), Toast.LENGTH_LONG).show();
     }
+
     private String timeFormated(long timeStamp){
 
         try{

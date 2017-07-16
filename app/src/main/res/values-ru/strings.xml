@@ -6,4 +6,11 @@
     <string name="impossible_to_get_weather">Не удалось получить данные</string>
     <string name="moscow">Москва</string>
     <string name="impossible_convert_data">Не удалось сконвертировать данные</string>
+    <string name="wind">"Ветер: "</string>
+    <string name="pressure">"Давление: "</string>
+    <string name="max_temp"></string>
+    <string name="humidity">"Влажность: "</string>
+    <string name="msec">м/с</string>
+    <string name="mmhg">мм.рт.ст.</string>
+    <string name="hpa">гПа</string>
 </resources>

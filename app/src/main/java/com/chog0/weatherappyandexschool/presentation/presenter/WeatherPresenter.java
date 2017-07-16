@@ -43,6 +43,7 @@ public class WeatherPresenter extends MvpPresenter<WeatherView> {
                 .subscribe(response -> {
                     Log.d(TAG_PRESENTER, "getWeather: weather come");
                     interactor.saveWeather(response);
+                    parseWeatherFromSP();
                 });
     }
 
