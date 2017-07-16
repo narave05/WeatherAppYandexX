@@ -71,7 +71,7 @@ public class WeatherFragment extends MvpAppCompatFragment implements WeatherView
         View view = inflater.inflate(R.layout.fragment_weather, container, false);
         ButterKnife.bind(this, view);
 
-        weatherPresenter.getWeather();
+        weatherPresenter.parseWeatherFromSP();
         weatherFont = Typeface.createFromAsset(getActivity().getAssets(), "fonts/weather.ttf");
 
         iconTv.setTypeface(weatherFont);

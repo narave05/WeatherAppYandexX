@@ -7,9 +7,15 @@ package com.chog0.weatherappyandexschool.interactor;
 
 
 import com.chog0.weatherappyandexschool.model.ResponseModel.ResponseWeather;
+import com.chog0.weatherappyandexschool.model.app_model.WeatherDTO;
 
 import io.reactivex.Observable;
+import retrofit2.Response;
 
 public interface Interactor {
-    Observable<ResponseWeather> getWeather(String cityId);
+    Observable<String> getWeather(String cityId);
+
+    void saveWeather(String response);
+
+    WeatherDTO parseWeather();
 }

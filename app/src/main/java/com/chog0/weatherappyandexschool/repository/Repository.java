@@ -9,9 +9,12 @@ package com.chog0.weatherappyandexschool.repository;
 import com.chog0.weatherappyandexschool.model.ResponseModel.ResponseWeather;
 
 import io.reactivex.Observable;
+import okhttp3.ResponseBody;
+import retrofit2.Response;
 
 public interface Repository {
 
-    Observable<ResponseWeather> getWeather(String cityId);
-    void storeWeather();
+    Observable<String> getWeather(String cityId);
+    void storeWeather(String response);
+
 }

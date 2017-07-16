@@ -9,11 +9,13 @@ package com.chog0.weatherappyandexschool.web;
 import com.chog0.weatherappyandexschool.model.ResponseModel.ResponseWeather;
 
 import io.reactivex.Observable;
+import okhttp3.ResponseBody;
+import retrofit2.Response;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
 
 public interface WeatherApi {
 
     @GET("weather?")
-    Observable<ResponseWeather> getCurrentWeather(@Query("id") String cityId, @Query("appid") String apiKey);
+    Observable<String> getCurrentWeather(@Query("id") String cityId, @Query("appid") String apiKey);
 }

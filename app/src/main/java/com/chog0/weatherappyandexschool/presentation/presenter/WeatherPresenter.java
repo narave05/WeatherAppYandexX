@@ -14,6 +14,7 @@ import com.chog0.weatherappyandexschool.Constants;
 import com.chog0.weatherappyandexschool.WeatherApp;
 import com.chog0.weatherappyandexschool.interactor.InteractorImpl;
 import com.chog0.weatherappyandexschool.model.ResponseModel.ResponseWeather;
+import com.chog0.weatherappyandexschool.model.app_model.WeatherDTO;
 import com.chog0.weatherappyandexschool.presentation.ui.WeatherView;
 
 
@@ -21,6 +22,7 @@ import javax.inject.Inject;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
+import retrofit2.Response;
 
 @InjectViewState
 public class WeatherPresenter extends MvpPresenter<WeatherView> {
@@ -38,25 +40,22 @@ public class WeatherPresenter extends MvpPresenter<WeatherView> {
         interactor.getWeather(Constants.MOSCOW_ID)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .onErrorReturn(e -> {
-                    Log.e(TAG_PRESENTER, "getWeather: ", e.getCause());
-                    showError(e);
-                    return new ResponseWeather();
-
-                })
-                .subscribe(responseWeather -> {
+                .subscribe(response -> {
                     Log.d(TAG_PRESENTER, "getWeather: weather come");
-
-                    showWeather(responseWeather);
+                    interactor.saveWeather(response);
                 });
-
     }
 
-    private void showWeather(ResponseWeather responseWeather) {
-        getViewState().showData(interactor.builWeather(responseWeather));
+    public void parseWeatherFromSP(){
+
+        showWeather(interactor.parseWeather());
     }
 
-    private void showError(Throwable e) {
+    public void showWeather(WeatherDTO weatherDTO) {
+        getViewState().showData(weatherDTO);
+    }
+
+    public void showError(Throwable e) {
         getViewState().showError(e);
     }
 
