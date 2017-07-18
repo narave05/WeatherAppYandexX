@@ -8,7 +8,6 @@
     <string name="impossible_convert_data">Не удалось сконвертировать данные</string>
     <string name="wind">"Ветер: "</string>
     <string name="pressure">"Давление: "</string>
-    <string name="max_temp"></string>
     <string name="humidity">"Влажность: "</string>
     <string name="msec">м/с</string>
     <string name="mmhg">мм.рт.ст.</string>

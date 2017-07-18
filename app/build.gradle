@@ -2,21 +2,39 @@ apply plugin: 'com.android.application'
 apply plugin: 'me.tatarka.retrolambda'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.0"
+
+    compileSdkVersion versions.compileSdk
+    buildToolsVersion versions.buildTools
+
     defaultConfig {
         applicationId "com.chog0.weatherappyandexschool"
-        minSdkVersion 15
-        targetSdkVersion 25
-        versionCode 1
-        versionName "1.0"
+        minSdkVersion versions.minSdk
+        targetSdkVersion versions.targetSdk
+        versionCode versions.code
+        versionName versions.name
+
+        // Make generated apks contain version name and code.
+        archivesBaseName = "app-${versions.name}-${versions.code}"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
     }
+    signingConfigs {
+        release {
+            storeFile file(RELEASE_STORE_FILE)
+            storePassword RELEASE_STORE_PASSWORD
+            keyAlias RELEASE_KEY_ALIAS
+            keyPassword RELEASE_KEY_PASSWORD
+        }
+    }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+        }
+        debug {
+            minifyEnabled false
+            applicationIdSuffix ".debug"
         }
     }
     compileOptions {
@@ -32,54 +50,46 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
-    compile('com.squareup.retrofit2:retrofit:2.1.0') {
-        exclude module: 'okhttp'
-    }
 
+    testCompile libraries.junit
 
-    compile 'com.android.support:appcompat-v7:25.3.1'
-    compile 'com.android.support:design:25.3.1'
-    compile 'com.android.support:support-v4:25.3.1'
-    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    //support library
+    compile libraries.supportDesign
+    compile libraries.supportAppCompat
+    compile libraries.supportConstraint
+    compile libraries.supportCardView
 
-    compile 'com.jakewharton:butterknife:8.6.0'
+    //http
+    compile libraries.retrofit
+    compile libraries.retrofitScalars
 
-    compile 'com.google.dagger:dagger:2.11'
+    //moxy
+    compile libraries.moxy
+    compile libraries.moxyAppCompat
+    annotationProcessor libraries.moxyCompiler
 
-    compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
-    compile 'io.reactivex.rxjava2:rxjava:2.0.1'
+    //butterknife
+    compile libraries.butterKnife
+    annotationProcessor libraries.butterKnifeCompiler
 
+    //dagger
+    compile libraries.dagger
+    annotationProcessor libraries.daggerCompiler
 
-    compile 'com.squareup.retrofit2:converter-scalars:2.1.0'
+    //rx
+    compile libraries.rxjava
+    compile libraries.rxandroid
+    compile libraries.rxadapter
 
-    compile 'com.squareup.okhttp3:logging-interceptor:3.4.1'
-    compile 'com.squareup.okhttp3:okhttp:3.4.1'
+    //android job
+    compile libraries.androidJob
+    compile libraries.googlePlayServicesGcm
 
-    compile 'com.squareup.retrofit2:converter-jackson:2.2.0'
-    compile 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
+    compile libraries.stetho
 
-
-    compile 'com.arello-mobile:moxy:1.5.3'
-    compile 'com.arello-mobile:moxy-app-compat:1.5.3'
-    annotationProcessor 'com.arello-mobile:moxy-compiler:1.5.3'
-
-    compile 'com.facebook.stetho:stetho:1.5.0'
-
-    compile 'com.fasterxml.jackson.core:jackson-core:2.7.2'
-    compile 'com.fasterxml.jackson.core:jackson-annotations:2.7.2'
-    compile 'com.fasterxml.jackson.core:jackson-databind:2.7.2'
-
-    compile 'com.evernote:android-job:1.1.11'
-    compile "com.google.android.gms:play-services-gcm:11.0.1"
-
-
-    testCompile 'junit:junit:4.12'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:8.6.0'
-    annotationProcessor 'com.google.dagger:dagger-compiler:2.11'
-    provided 'javax.annotation:jsr250-api:1.0'
-    compile 'com.android.support:cardview-v7:25.3.1'
+    compile libraries.retrofitJackson
+    compile libraries.okhttp3
+    compile libraries.logginginterceptor
+    compile libraries.jacksonannotations
+    compile libraries.jacksondatabind
 }
