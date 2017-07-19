@@ -17,7 +17,7 @@ import javax.inject.Singleton;
 
 import dagger.Component;
 
-@Component(modules = {PresenterModule.class, RepositoryModule.class, NetworkModule.class, ContextModule.class, InteractorModule.class,
+@Component(modules = {RepositoryModule.class, NetworkModule.class, ContextModule.class, InteractorModule.class,
         PreferencesModule.class})
 @Singleton
 public interface AppComponent {

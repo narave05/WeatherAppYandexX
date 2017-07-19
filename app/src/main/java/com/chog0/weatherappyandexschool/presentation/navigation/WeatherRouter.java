@@ -10,13 +10,13 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
-public class RouterFragment implements Router<Fragment> {
+public class WeatherRouter implements Router<Fragment> {
 
     private String fragmentName;
     private FragmentManager fragmentManager;
     private int container;
 
-    public RouterFragment(FragmentManager fragmentManager, int container) {
+    public WeatherRouter(FragmentManager fragmentManager, int container) {
         this.fragmentManager = fragmentManager;
         this.container = container;
     }

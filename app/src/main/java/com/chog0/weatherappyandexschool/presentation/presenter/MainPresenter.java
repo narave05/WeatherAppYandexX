@@ -22,7 +22,7 @@ public class MainPresenter extends MvpPresenter<MainView>{
 
     private Router<Fragment> routerFragment;
 
-    public void setRouterFragment(Router<Fragment> routerFragment) {
+    public MainPresenter(Router<Fragment> routerFragment) {
         this.routerFragment = routerFragment;
     }
 

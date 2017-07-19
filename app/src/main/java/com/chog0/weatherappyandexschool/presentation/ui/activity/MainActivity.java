@@ -1,44 +1,40 @@
 package com.chog0.weatherappyandexschool.presentation.ui.activity;
 
-import android.app.ActionBar;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
 
 import com.arellomobile.mvp.MvpAppCompatActivity;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.chog0.weatherappyandexschool.R;
-import com.chog0.weatherappyandexschool.WeatherApp;
 import com.chog0.weatherappyandexschool.presentation.navigation.Router;
-import com.chog0.weatherappyandexschool.presentation.navigation.RouterFragment;
+import com.chog0.weatherappyandexschool.presentation.navigation.WeatherRouter;
 import com.chog0.weatherappyandexschool.presentation.presenter.MainPresenter;
 import com.chog0.weatherappyandexschool.presentation.view.MainView;
-
-import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MainActivity extends MvpAppCompatActivity implements MainView, NavigationView.OnNavigationItemSelectedListener {
 
+    private Router<Fragment> routerFragment = new WeatherRouter(this.getSupportFragmentManager(), R.id.fragment_container);
+
     @InjectPresenter
     MainPresenter mainPresenter;
 
-    @BindView(R.id.drawer_layout) DrawerLayout drawerLayout;
+    @ProvidePresenter
+    public MainPresenter providePresenter(){
+        return new MainPresenter(routerFragment);
+    }
 
-    private Router<Fragment> routerFragment = new RouterFragment(this.getSupportFragmentManager(), R.id.fragment_container);
+    @BindView(R.id.drawer_layout) DrawerLayout drawerLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,9 +48,6 @@ public class MainActivity extends MvpAppCompatActivity implements MainView, Navi
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayShowTitleEnabled(false);
         }
-
-
-        mainPresenter.setRouterFragment(routerFragment);
 
         if (savedInstanceState == null) {
             mainPresenter.openWeatherFragment();
