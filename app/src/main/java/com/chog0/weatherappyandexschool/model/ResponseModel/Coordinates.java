@@ -17,14 +17,14 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 public class Coordinates {
 
     @JsonProperty("lon")
-    private Double lon;
+    private double lon;
     @JsonProperty("lat")
-    private Double lat;
+    private double lat;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     @JsonProperty("lon")
-    public Double getLon() {
+    public double getLon() {
         return lon;
     }
 
@@ -34,12 +34,12 @@ public class Coordinates {
     }
 
     @JsonProperty("lat")
-    public Double getLat() {
+    public double getLat() {
         return lat;
     }
 
     @JsonProperty("lat")
-    public void setLat(Double lat) {
+    public void setLat(double lat) {
         this.lat = lat;
     }
 

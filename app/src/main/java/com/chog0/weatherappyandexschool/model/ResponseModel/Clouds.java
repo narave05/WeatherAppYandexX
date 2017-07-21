@@ -16,12 +16,12 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 public class Clouds {
 
     @JsonProperty("all")
-    private Integer all;
+    private int all;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     @JsonProperty("all")
-    public Integer getAll() {
+    public int getAll() {
         return all;
     }
 

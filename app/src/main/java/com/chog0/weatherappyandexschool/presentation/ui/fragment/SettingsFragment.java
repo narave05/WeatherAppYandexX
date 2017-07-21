@@ -3,6 +3,7 @@ package com.chog0.weatherappyandexschool.presentation.ui.fragment;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
@@ -28,7 +29,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-public class SettingsFragment extends MvpAppCompatFragment implements View.OnClickListener, SettingsView {
+public class SettingsFragment extends BaseFragment implements View.OnClickListener, SettingsView {
 
     @InjectPresenter
     SettingsPresenter presenter;
@@ -39,8 +40,6 @@ public class SettingsFragment extends MvpAppCompatFragment implements View.OnCli
     public static final int PERIOD_30 = 30;
     public static final int PERIOD_45 = 45;
     public static final int PERIOD_0 = 0;
-    @Inject
-    RepositoryImpl repository;
 
     @BindView(R.id._1_h)RadioButton RadioButton1h;
     @BindView(R.id._3_h)RadioButton RadioButton3h;
@@ -48,12 +47,7 @@ public class SettingsFragment extends MvpAppCompatFragment implements View.OnCli
     @BindView(R.id._30_min)RadioButton RadioButton30min;
     @BindView(R.id._45_min)RadioButton RadioButton45min;
     @BindView(R.id.dont_update)RadioButton RadioButtonDontUpdate;
-    private Unbinder unbinder;
     private View view;
-
-    public SettingsFragment() {
-        // Required empty public constructor
-    }
 
     public static SettingsFragment newInstance() {
         SettingsFragment fragment = new SettingsFragment();
@@ -62,24 +56,25 @@ public class SettingsFragment extends MvpAppCompatFragment implements View.OnCli
         return fragment;
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_settings, container, false);
-
-        ButterKnife.bind(this, view);
-
-        Log.d(this.getClass().getName(), "onCreateView: " + R.id.dont_update);
-
         WeatherApp.getAppComponent().inject(this);
 
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         presenter.getRadioButtonId();
+        setListenersOnRadioButtons();
+    }
+
+    private void setListenersOnRadioButtons() {
 
         RadioButton1h.setOnClickListener(this);
         RadioButton3h.setOnClickListener(this);
@@ -87,28 +82,8 @@ public class SettingsFragment extends MvpAppCompatFragment implements View.OnCli
         RadioButton30min.setOnClickListener(this);
         RadioButton45min.setOnClickListener(this);
         RadioButtonDontUpdate.setOnClickListener(this);
-
-        return view;
     }
 
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-
-    }
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        if (unbinder != null) {
-            unbinder.unbind();
-        }
-    }
 
     @Override
     public void onClick(View v) {

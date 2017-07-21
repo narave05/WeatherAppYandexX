@@ -6,10 +6,13 @@ package com.chog0.weatherappyandexschool.presentation.ui;
  */
 
 
+import android.support.annotation.NonNull;
+
 import com.arellomobile.mvp.MvpView;
 import com.chog0.weatherappyandexschool.model.app_model.WeatherDTO;
 
 public interface WeatherView extends MvpView{
-    void showData(WeatherDTO weatherDTO);
-    void showError(String e);
+    void showData(@NonNull WeatherDTO weatherDTO);
+    void showError(@NonNull String e);
+    void setInfoToViews();
 }

@@ -9,5 +9,5 @@ package com.chog0.weatherappyandexschool.presentation.view;
 import com.arellomobile.mvp.MvpView;
 
 public interface MainView extends MvpView {
-
+    void initView();
 }

@@ -7,7 +7,7 @@ package com.chog0.weatherappyandexschool;
 
 
 import android.app.Application;
-import android.content.Context;
+import android.support.annotation.NonNull;
 
 import com.chog0.weatherappyandexschool.di.AppComponent;
 import com.chog0.weatherappyandexschool.di.ContextModule;
@@ -15,7 +15,6 @@ import com.chog0.weatherappyandexschool.di.DaggerAppComponent;
 import com.chog0.weatherappyandexschool.di.InteractorModule;
 import com.chog0.weatherappyandexschool.di.NetworkModule;
 import com.chog0.weatherappyandexschool.di.PreferencesModule;
-import com.chog0.weatherappyandexschool.di.PresenterModule;
 import com.chog0.weatherappyandexschool.di.RepositoryModule;
 import com.chog0.weatherappyandexschool.job.WeatherJobCreator;
 import com.chog0.weatherappyandexschool.job.WeatherSyncJob;
@@ -34,6 +33,7 @@ public class WeatherApp extends Application {
     PreferencesManager preferencesManager;
 
     private static AppComponent appComponent;
+
     public static AppComponent getAppComponent() {
         return appComponent;
     }
@@ -53,7 +53,7 @@ public class WeatherApp extends Application {
         runJob(manager);
     }
 
-    private void runJob(JobManager manager) {
+    private void runJob(@NonNull JobManager manager) {
         if (preferencesManager.getPeriod() != 0) {
             manager.addJobCreator(new WeatherJobCreator(repository));
             WeatherSyncJob.scheduleJob(repository.getWeatherUpdatePeriod());
@@ -64,7 +64,6 @@ public class WeatherApp extends Application {
 
     protected AppComponent buildAppComponent(){
         return DaggerAppComponent.builder()
-                .presenterModule(new PresenterModule())
                 .repositoryModule(new RepositoryModule())
                 .networkModule(new NetworkModule())
                 .contextModule(new ContextModule(this))
@@ -72,6 +71,7 @@ public class WeatherApp extends Application {
                 .preferencesModule(new PreferencesModule())
                 .build();
     }
+
     public static WeatherApp getContext(){
         return context;
     }

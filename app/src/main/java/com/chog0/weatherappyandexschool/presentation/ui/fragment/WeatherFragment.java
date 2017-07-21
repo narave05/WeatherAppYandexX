@@ -3,6 +3,8 @@ package com.chog0.weatherappyandexschool.presentation.ui.fragment;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -34,7 +36,7 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 
-public class WeatherFragment extends MvpAppCompatFragment implements WeatherView{
+public class WeatherFragment extends BaseFragment implements WeatherView{
 
     private Typeface weatherFont;
 
@@ -53,12 +55,6 @@ public class WeatherFragment extends MvpAppCompatFragment implements WeatherView
     @BindView(R.id.pressure_tv)TextView pressureTv;
     @BindView(R.id.error_tv)TextView errorTv;
     @BindView(R.id.constrain_weather)ConstraintLayout container;
-    private Unbinder unbinder;
-
-
-    public WeatherFragment() {
-        // Required empty public constructor
-    }
 
     public static WeatherFragment newInstance() {
         WeatherFragment fragment = new WeatherFragment();
@@ -67,25 +63,24 @@ public class WeatherFragment extends MvpAppCompatFragment implements WeatherView
         return fragment;
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_weather, container, false);
-        ButterKnife.bind(this, view);
-
-        refreshLayout.setOnRefreshListener(() ->{
-            errorTv.setVisibility(View.GONE);
-            weatherPresenter.getWeather();
-        });
-        refreshLayout.setColorSchemeResources(R.color.colorAccent);
-
         weatherPresenter.parseWeatherFromSP();
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        refreshWeather();
+    }
+
+    @Override
+    public void setInfoToViews() {
         weatherFont = Typeface.createFromAsset(getActivity().getAssets(), "fonts/weather.ttf");
 
         iconTv.setTypeface(weatherFont);
@@ -94,25 +89,19 @@ public class WeatherFragment extends MvpAppCompatFragment implements WeatherView
         humidityTv.setTypeface(weatherFont);
         maxTempTv.setTypeface(weatherFont);
         minTempTv.setTypeface(weatherFont);
-        return view;
+    }
+
+    private void refreshWeather() {
+        refreshLayout.setOnRefreshListener(() -> {
+            errorTv.setVisibility(View.GONE);
+            weatherPresenter.getWeather();
+        });
+
+        refreshLayout.setColorSchemeResources(R.color.colorAccent);
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        if (unbinder != null) {
-            unbinder.unbind();
-        }
-    }
-
-    @Override
-    public void showData(WeatherDTO weatherDTO) {
+    public void showData(@NonNull WeatherDTO weatherDTO) {
         container.setVisibility(View.VISIBLE);
         errorTv.setVisibility(View.GONE);
         cityTv.setText(getString(R.string.moscow));
@@ -120,7 +109,7 @@ public class WeatherFragment extends MvpAppCompatFragment implements WeatherView
         maxTempTv.setText(getString(R.string.temp) + " " + String.valueOf(weatherDTO.getMaxTemperature().intValue()) + getString(R.string.celsius));
         minTempTv.setText(getString(R.string.temp) + " " +String.valueOf(weatherDTO.getMinTemperature().intValue()) + getString(R.string.celsius));
         setWeatherIcon(weatherDTO.getId());
-        udateTimeTv.setText(timeFormated(weatherDTO.getTime()));
+        udateTimeTv.setText(weatherDTO.getTime());
         pressureTv.setText(getString(R.string.pressure) + " " + String.valueOf(weatherDTO.getPressure().intValue()) + " " + getString(R.string.mmhg));
         windTv.setText(getString(R.string.wind) + " " + String.valueOf(weatherDTO.getWind()) + " " + getString(R.string.msec));
         humidityTv.setText(getString(R.string.humidity) + " " + String.valueOf(weatherDTO.getHumidity()) + " " + getString(R.string.percents));
@@ -128,24 +117,14 @@ public class WeatherFragment extends MvpAppCompatFragment implements WeatherView
     }
 
     @Override
-    public void showError(String throwable) {
+    public void showError(@NonNull String throwable) {
+        Log.e(this.getClass().getName(), throwable);
         refreshLayout.setRefreshing(false);
         container.setVisibility(View.GONE);
         errorTv.setVisibility(View.VISIBLE);
     }
 
-    private String timeFormated(long timeStamp){
 
-        try{
-            DateFormat sdf = new SimpleDateFormat("dd.MM hh:mm:ss", Locale.getDefault());
-            Date netDate = (new Date(timeStamp));
-            return sdf.format(netDate);
-        }
-        catch(Exception ex){
-            Log.e(this.getClass().getName(), "timeFormated: ", ex.getCause());
-            return getString(R.string.impossible_convert_data);
-        }
-    }
     private void setWeatherIcon(int actualId){
         int id = actualId / 100;
         String icon = "";

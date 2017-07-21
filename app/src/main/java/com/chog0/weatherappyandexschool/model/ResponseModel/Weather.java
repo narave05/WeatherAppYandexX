@@ -19,7 +19,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 public class Weather {
 
     @JsonProperty("id")
-    private Integer id;
+    private int id;
     @JsonProperty("main")
     private String main;
     @JsonProperty("description")
@@ -30,7 +30,7 @@ public class Weather {
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     @JsonProperty("id")
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 

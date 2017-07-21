@@ -13,6 +13,7 @@ import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
 import com.chog0.weatherappyandexschool.Constants;
 import com.chog0.weatherappyandexschool.WeatherApp;
+import com.chog0.weatherappyandexschool.interactor.Callback;
 import com.chog0.weatherappyandexschool.interactor.InteractorImpl;
 import com.chog0.weatherappyandexschool.model.ResponseModel.ResponseWeather;
 import com.chog0.weatherappyandexschool.model.app_model.WeatherDTO;
@@ -28,14 +29,15 @@ import retrofit2.Response;
 @InjectViewState
 public class WeatherPresenter extends MvpPresenter<WeatherView> {
 
-    public WeatherPresenter() {
-        WeatherApp.getAppComponent().inject(this);
-    }
-
     private static final String TAG_PRESENTER = "MainPresenter";
 
     @Inject
     InteractorImpl interactor;
+
+    public WeatherPresenter() {
+        WeatherApp.getAppComponent().inject(this);
+        getViewState().setInfoToViews();
+    }
 
     public void getWeather(){
         interactor.getWeather(Constants.MOSCOW_ID)
@@ -54,17 +56,25 @@ public class WeatherPresenter extends MvpPresenter<WeatherView> {
 
     public void parseWeatherFromSP(){
 
-        showWeather(interactor.parseWeather(this));
+        interactor.parseWeather(new Callback() {
+            @Override
+            public void onSuccess(WeatherDTO weatherDTO) {
+                showWeather(weatherDTO);
+            }
+
+            @Override
+            public void onError(String message) {
+                showError(message);
+            }
+        });
     }
 
-    public void showWeather(WeatherDTO weatherDTO) {
-        if (weatherDTO != null) {
-            getViewState().showData(weatherDTO);
-        }
+    public void showWeather(@NonNull WeatherDTO weatherDTO) {
+        getViewState().showData(weatherDTO);
 
     }
 
-    public void showError(String e) {
+    public void showError(@NonNull String e) {
         getViewState().showError(e);
     }
 

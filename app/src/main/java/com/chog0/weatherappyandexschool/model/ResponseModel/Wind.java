@@ -17,29 +17,29 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 public class Wind {
 
     @JsonProperty("speed")
-    private Double speed;
+    private double speed;
     @JsonProperty("deg")
-    private Double deg;
+    private double deg;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     @JsonProperty("speed")
-    public Double getSpeed() {
+    public double getSpeed() {
         return speed;
     }
 
     @JsonProperty("speed")
-    public void setSpeed(Double speed) {
+    public void setSpeed(double speed) {
         this.speed = speed;
     }
 
     @JsonProperty("deg")
-    public Double getDeg() {
+    public double getDeg() {
         return deg;
     }
 
     @JsonProperty("deg")
-    public void setDeg(Double deg) {
+    public void setDeg(double deg) {
         this.deg = deg;
     }
 

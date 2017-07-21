@@ -19,23 +19,23 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 public class SunRiseAndSet {
 
     @JsonProperty("message")
-    private Double message;
+    private double message;
     @JsonProperty("country")
     private String country;
     @JsonProperty("sunrise")
-    private Integer sunrise;
+    private int sunrise;
     @JsonProperty("sunset")
-    private Integer sunset;
+    private int sunset;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     @JsonProperty("message")
-    public Double getMessage() {
+    public double getMessage() {
         return message;
     }
 
     @JsonProperty("message")
-    public void setMessage(Double message) {
+    public void setMessage(double message) {
         this.message = message;
     }
 
@@ -50,22 +50,22 @@ public class SunRiseAndSet {
     }
 
     @JsonProperty("sunrise")
-    public Integer getSunrise() {
+    public int getSunrise() {
         return sunrise;
     }
 
     @JsonProperty("sunrise")
-    public void setSunrise(Integer sunrise) {
+    public void setSunrise(int sunrise) {
         this.sunrise = sunrise;
     }
 
     @JsonProperty("sunset")
-    public Integer getSunset() {
+    public int getSunset() {
         return sunset;
     }
 
     @JsonProperty("sunset")
-    public void setSunset(Integer sunset) {
+    public void setSunset(int sunset) {
         this.sunset = sunset;
     }
 
