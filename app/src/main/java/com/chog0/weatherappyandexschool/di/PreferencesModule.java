@@ -5,8 +5,7 @@ package com.chog0.weatherappyandexschool.di;
  * @since 0.1
  */
 
-import android.content.Context;
-import android.support.annotation.NonNull;
+import com.chog0.weatherappyandexschool.settings.PreferencesManager;
 
 import javax.inject.Singleton;
 
@@ -14,17 +13,10 @@ import dagger.Module;
 import dagger.Provides;
 
 @Module
-public class AppModule {
-
-    Context context;
-
-    public AppModule(@NonNull Context context) {
-        this.context = context;
-    }
-
+public class PreferencesModule {
     @Singleton
     @Provides
-    public Context provideContext(){
-        return context;
+    public PreferencesManager providePreferencesManager(){
+        return new PreferencesManager();
     }
 }

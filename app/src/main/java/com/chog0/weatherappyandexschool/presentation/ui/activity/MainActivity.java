@@ -2,6 +2,7 @@ package com.chog0.weatherappyandexschool.presentation.ui.activity;
 
 import android.app.ActionBar;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -15,21 +16,25 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.arellomobile.mvp.MvpAppCompatActivity;
+import com.arellomobile.mvp.presenter.InjectPresenter;
+import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.chog0.weatherappyandexschool.R;
 import com.chog0.weatherappyandexschool.WeatherApp;
 import com.chog0.weatherappyandexschool.presentation.navigation.Router;
 import com.chog0.weatherappyandexschool.presentation.navigation.RouterFragment;
 import com.chog0.weatherappyandexschool.presentation.presenter.MainPresenter;
+import com.chog0.weatherappyandexschool.presentation.view.MainView;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends MvpAppCompatActivity implements MainView, NavigationView.OnNavigationItemSelectedListener {
 
-    @Inject MainPresenter mainPresenter;
+    @InjectPresenter
+    MainPresenter mainPresenter;
 
     @BindView(R.id.drawer_layout) DrawerLayout drawerLayout;
 
@@ -43,13 +48,12 @@ public class MainActivity extends AppCompatActivity
         ButterKnife.bind(this);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        //setSupportActionBar(toolbar);
 
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayShowTitleEnabled(false);
         }
 
-        WeatherApp.getPresenterComponent().inject(this);
+
         mainPresenter.setRouterFragment(routerFragment);
 
         if (savedInstanceState == null) {
@@ -77,10 +81,8 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-
-    @SuppressWarnings("StatementWithEmptyBody")
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
         switch (item.getItemId()){
             case R.id.nav_weather:

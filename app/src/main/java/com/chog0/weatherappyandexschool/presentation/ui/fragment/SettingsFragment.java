@@ -4,13 +4,52 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RadioButton;
 
+import com.arellomobile.mvp.MvpAppCompatFragment;
+import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.chog0.weatherappyandexschool.R;
+import com.chog0.weatherappyandexschool.WeatherApp;
+import com.chog0.weatherappyandexschool.job.WeatherSyncJob;
+import com.chog0.weatherappyandexschool.model.ResponseModel.Weather;
+import com.chog0.weatherappyandexschool.presentation.presenter.SettingsPresenter;
+import com.chog0.weatherappyandexschool.presentation.view.SettingsView;
+import com.chog0.weatherappyandexschool.repository.RepositoryImpl;
+import com.evernote.android.job.JobManager;
 
-public class SettingsFragment extends Fragment {
+import javax.inject.Inject;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
+
+public class SettingsFragment extends MvpAppCompatFragment implements View.OnClickListener, SettingsView {
+
+    @InjectPresenter
+    SettingsPresenter presenter;
+
+    public static final int PERIOD_60 = 60;
+    public static final int PERIOD_180 = 180;
+    public static final int PERIOD_15 = 15;
+    public static final int PERIOD_30 = 30;
+    public static final int PERIOD_45 = 45;
+    public static final int PERIOD_0 = 0;
+    @Inject
+    RepositoryImpl repository;
+
+    @BindView(R.id._1_h)RadioButton RadioButton1h;
+    @BindView(R.id._3_h)RadioButton RadioButton3h;
+    @BindView(R.id._15_min)RadioButton RadioButton15min;
+    @BindView(R.id._30_min)RadioButton RadioButton30min;
+    @BindView(R.id._45_min)RadioButton RadioButton45min;
+    @BindView(R.id.dont_update)RadioButton RadioButtonDontUpdate;
+    private Unbinder unbinder;
+    private View view;
 
     public SettingsFragment() {
         // Required empty public constructor
@@ -32,7 +71,24 @@ public class SettingsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_settings, container, false);
+        view = inflater.inflate(R.layout.fragment_settings, container, false);
+
+        ButterKnife.bind(this, view);
+
+        Log.d(this.getClass().getName(), "onCreateView: " + R.id.dont_update);
+
+        WeatherApp.getAppComponent().inject(this);
+
+        presenter.getRadioButtonId();
+
+        RadioButton1h.setOnClickListener(this);
+        RadioButton3h.setOnClickListener(this);
+        RadioButton15min.setOnClickListener(this);
+        RadioButton30min.setOnClickListener(this);
+        RadioButton45min.setOnClickListener(this);
+        RadioButtonDontUpdate.setOnClickListener(this);
+
+        return view;
     }
 
 
@@ -46,6 +102,45 @@ public class SettingsFragment extends Fragment {
         super.onDetach();
 
     }
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (unbinder != null) {
+            unbinder.unbind();
+        }
+    }
 
+    @Override
+    public void onClick(View v) {
+        boolean checked = ((RadioButton)v).isChecked();
 
+        if (checked) {
+            switch (v.getId()) {
+                case R.id._1_h:
+                        presenter.scheduleJob(PERIOD_60, v.getId());
+                    break;
+                case R.id._3_h:
+                        presenter.scheduleJob(PERIOD_180, v.getId());
+                    break;
+                case R.id._15_min:
+                        presenter.scheduleJob(PERIOD_15, v.getId());
+                    break;
+                case R.id._30_min:
+                        presenter.scheduleJob(PERIOD_30, v.getId());
+                    break;
+                case R.id._45_min:
+                        presenter.scheduleJob(PERIOD_45, v.getId());
+                    break;
+                case R.id.dont_update:
+                        presenter.scheduleJob(PERIOD_0, v.getId());
+                    break;
+            }
+        }
+
+    }
+
+    @Override
+    public void setRadioButton(int id) {
+        ((RadioButton) view.findViewById(id)).setChecked(true);
+    }
 }
