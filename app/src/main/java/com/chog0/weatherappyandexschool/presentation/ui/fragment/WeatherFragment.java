@@ -118,6 +118,7 @@ public class WeatherFragment extends BaseFragment implements WeatherView{
 
     @Override
     public void showError(@NonNull String throwable) {
+        Log.e(this.getClass().getName(), throwable);
         refreshLayout.setRefreshing(false);
         container.setVisibility(View.GONE);
         errorTv.setVisibility(View.VISIBLE);
