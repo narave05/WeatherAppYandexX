@@ -6,6 +6,7 @@ package com.chog0.weatherappyandexschool.presentation.navigation;
  */
 
 
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -22,7 +23,7 @@ public class WeatherRouter implements Router<Fragment> {
     }
 
     @Override
-    public void openFirstFragment(Fragment fragment) {
+    public void openFirstFragment(@NonNull Fragment fragment) {
         fragmentManager
                 .beginTransaction()
                 .replace(container, fragment)
@@ -30,16 +31,15 @@ public class WeatherRouter implements Router<Fragment> {
     }
 
     @Override
-    public void pushFragment(Fragment fragment) {
+    public void pushFragment(@NonNull Fragment fragment) {
 
         String backStateName =  fragment.getClass().getName();
-        String fragmentTag = backStateName;
 
         boolean fragmentPopped = fragmentManager.popBackStackImmediate (backStateName, 0);
 
-        if (!fragmentPopped && fragmentManager.findFragmentByTag(fragmentTag) == null) { //fragment not in back stack, create it.
+        if (!fragmentPopped && fragmentManager.findFragmentByTag(backStateName) == null) { //fragment not in back stack, create it.
             FragmentTransaction ft = fragmentManager.beginTransaction();
-            ft.replace(container, fragment, fragmentTag);
+            ft.replace(container, fragment, backStateName);
             ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
             ft.addToBackStack(backStateName);
             ft.commit();

@@ -8,6 +8,7 @@ package com.chog0.weatherappyandexschool.settings;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.support.annotation.NonNull;
 
 import com.chog0.weatherappyandexschool.WeatherApp;
 
@@ -23,7 +24,7 @@ public class PreferencesManager {
         this.sharedPreferences = WeatherApp.getContext().getSharedPreferences("com.chog0.weatherappyandexschool", Context.MODE_PRIVATE);
     }
 
-    public void saveResponse(String response) {
+    public void saveResponse(@NonNull String response) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(RESPONSE, response);
         editor.apply();

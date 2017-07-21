@@ -22,44 +22,44 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 public class MainInfo {
 
     @JsonProperty("temp")
-    private Double temp;
+    private double temp;
     @JsonProperty("pressure")
-    private Double pressure;
+    private double pressure;
     @JsonProperty("humidity")
-    private Integer humidity;
+    private int humidity;
     @JsonProperty("temp_min")
-    private Double tempMin;
+    private double tempMin;
     @JsonProperty("temp_max")
-    private Double tempMax;
+    private double tempMax;
     @JsonProperty("sea_level")
-    private Double seaLevel;
+    private double seaLevel;
     @JsonProperty("grnd_level")
-    private Double grndLevel;
+    private double grndLevel;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     @JsonProperty("temp")
-    public Double getTemp() {
+    public double getTemp() {
         return temp;
     }
 
     @JsonProperty("temp")
-    public void setTemp(Double temp) {
+    public void setTemp(double temp) {
         this.temp = temp;
     }
 
     @JsonProperty("pressure")
-    public Double getPressure() {
+    public double getPressure() {
         return pressure;
     }
 
     @JsonProperty("pressure")
-    public void setPressure(Double pressure) {
+    public void setPressure(double pressure) {
         this.pressure = pressure;
     }
 
     @JsonProperty("humidity")
-    public Integer getHumidity() {
+    public int getHumidity() {
         return humidity;
     }
 
@@ -69,42 +69,42 @@ public class MainInfo {
     }
 
     @JsonProperty("temp_min")
-    public Double getTempMin() {
+    public double getTempMin() {
         return tempMin;
     }
 
     @JsonProperty("temp_min")
-    public void setTempMin(Double tempMin) {
+    public void setTempMin(double tempMin) {
         this.tempMin = tempMin;
     }
 
     @JsonProperty("temp_max")
-    public Double getTempMax() {
+    public double getTempMax() {
         return tempMax;
     }
 
     @JsonProperty("temp_max")
-    public void setTempMax(Double tempMax) {
+    public void setTempMax(double tempMax) {
         this.tempMax = tempMax;
     }
 
     @JsonProperty("sea_level")
-    public Double getSeaLevel() {
+    public double getSeaLevel() {
         return seaLevel;
     }
 
     @JsonProperty("sea_level")
-    public void setSeaLevel(Double seaLevel) {
+    public void setSeaLevel(double seaLevel) {
         this.seaLevel = seaLevel;
     }
 
     @JsonProperty("grnd_level")
-    public Double getGrndLevel() {
+    public double getGrndLevel() {
         return grndLevel;
     }
 
     @JsonProperty("grnd_level")
-    public void setGrndLevel(Double grndLevel) {
+    public void setGrndLevel(double grndLevel) {
         this.grndLevel = grndLevel;
     }
 

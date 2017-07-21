@@ -6,6 +6,7 @@ package com.chog0.weatherappyandexschool.presentation.presenter;
  */
 
 
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 
 import com.arellomobile.mvp.InjectViewState;
@@ -22,8 +23,9 @@ public class MainPresenter extends MvpPresenter<MainView>{
 
     private Router<Fragment> routerFragment;
 
-    public MainPresenter(Router<Fragment> routerFragment) {
+    public MainPresenter(@NonNull Router<Fragment> routerFragment) {
         this.routerFragment = routerFragment;
+        getViewState().initView();
     }
 
     public void openWeatherFragment (){

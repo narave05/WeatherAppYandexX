@@ -6,6 +6,8 @@ package com.chog0.weatherappyandexschool.repository;
  */
 
 
+import android.support.annotation.NonNull;
+
 import com.chog0.weatherappyandexschool.Constants;
 import com.chog0.weatherappyandexschool.WeatherApp;
 import com.chog0.weatherappyandexschool.model.ResponseModel.ResponseWeather;
@@ -30,12 +32,12 @@ public class RepositoryImpl implements Repository {
     }
 
     @Override
-    public Observable<String> getWeather(String cityId) {
+    public Observable<String> getWeather(@NonNull String cityId) {
         return weatherApi.getCurrentWeather(cityId, Constants.API_KEY);
     }
 
     @Override
-    public void storeWeather(String response) {
+    public void storeWeather(@NonNull String response) {
         preferencesManager.saveResponse(response);
     }
 

@@ -52,6 +52,7 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile libraries.junit
+    compile libraries.espressoCore
 
     //support library
     compile libraries.supportDesign
@@ -91,4 +92,5 @@ dependencies {
     compile libraries.logginginterceptor
     compile libraries.jacksonannotations
     compile libraries.jacksondatabind
+    compile 'com.android.support:support-v4:25.3.1'
 }

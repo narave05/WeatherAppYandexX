@@ -6,9 +6,11 @@ package com.chog0.weatherappyandexschool.presentation.navigation;
  */
 
 
+import android.support.annotation.NonNull;
+
 public interface Router<T> {
 
-    void pushFragment(T fragment);
-    void openFirstFragment(T fragment);
+    void pushFragment(@NonNull T fragment);
+    void openFirstFragment(@NonNull T fragment);
 
 }

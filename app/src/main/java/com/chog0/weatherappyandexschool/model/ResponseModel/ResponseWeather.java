@@ -40,15 +40,15 @@ public class ResponseWeather {
     @JsonProperty("clouds")
     private Clouds clouds;
     @JsonProperty("dt")
-    private Integer dt;
+    private int dt;
     @JsonProperty("sunRiseAndSet")
     private SunRiseAndSet sunRiseAndSet;
     @JsonProperty("id")
-    private Integer id;
+    private int id;
     @JsonProperty("name")
     private String name;
     @JsonProperty("cod")
-    private Integer cod;
+    private int cod;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
@@ -133,12 +133,12 @@ public class ResponseWeather {
     }
 
     @JsonProperty("id")
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 
     @JsonProperty("id")
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -153,12 +153,12 @@ public class ResponseWeather {
     }
 
     @JsonProperty("cod")
-    public Integer getCod() {
+    public int getCod() {
         return cod;
     }
 
     @JsonProperty("cod")
-    public void setCod(Integer cod) {
+    public void setCod(int cod) {
         this.cod = cod;
     }
 

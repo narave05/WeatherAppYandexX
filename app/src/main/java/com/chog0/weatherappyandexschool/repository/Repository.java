@@ -6,6 +6,8 @@ package com.chog0.weatherappyandexschool.repository;
  */
 
 
+import android.support.annotation.NonNull;
+
 import com.chog0.weatherappyandexschool.model.ResponseModel.ResponseWeather;
 
 import io.reactivex.Observable;
@@ -14,8 +16,8 @@ import retrofit2.Response;
 
 public interface Repository {
 
-    Observable<String> getWeather(String cityId);
-    void storeWeather(String response);
+    Observable<String> getWeather(@NonNull String cityId);
+    void storeWeather(@NonNull String response);
 
     void setWeatherUpdatePeriod(int period);
     int getWeatherUpdatePeriod();

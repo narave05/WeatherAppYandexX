@@ -7,6 +7,7 @@ package com.chog0.weatherappyandexschool;
 
 
 import android.app.Application;
+import android.support.annotation.NonNull;
 
 import com.chog0.weatherappyandexschool.di.AppComponent;
 import com.chog0.weatherappyandexschool.di.ContextModule;
@@ -32,6 +33,7 @@ public class WeatherApp extends Application {
     PreferencesManager preferencesManager;
 
     private static AppComponent appComponent;
+
     public static AppComponent getAppComponent() {
         return appComponent;
     }
@@ -51,7 +53,7 @@ public class WeatherApp extends Application {
         runJob(manager);
     }
 
-    private void runJob(JobManager manager) {
+    private void runJob(@NonNull JobManager manager) {
         if (preferencesManager.getPeriod() != 0) {
             manager.addJobCreator(new WeatherJobCreator(repository));
             WeatherSyncJob.scheduleJob(repository.getWeatherUpdatePeriod());
@@ -69,6 +71,7 @@ public class WeatherApp extends Application {
                 .preferencesModule(new PreferencesModule())
                 .build();
     }
+
     public static WeatherApp getContext(){
         return context;
     }

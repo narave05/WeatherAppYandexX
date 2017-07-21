@@ -39,7 +39,7 @@ public class SettingsPresenter  extends MvpPresenter<SettingsView> {
 
     public void scheduleJob(int time, int id){
         repository.setWeatherUpdatePeriod(time);
-        preferencesManager.saveRadioButtonId(id);
+        setRadioButtonId(id);
         if (time != 0) {
             WeatherSyncJob.scheduleJob(repository.getWeatherUpdatePeriod());
         }else {

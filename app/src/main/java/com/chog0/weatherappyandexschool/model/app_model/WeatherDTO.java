@@ -6,16 +6,18 @@ package com.chog0.weatherappyandexschool.model.app_model;
  */
 
 
+import android.support.annotation.NonNull;
+
 public class WeatherDTO {
     private String icon;
-    private Double temperature;
-    private Double minTemperature;
-    private Double maxTemperature;
-    private Double pressure;
-    private Double wind;
+    private double temperature;
+    private double minTemperature;
+    private double maxTemperature;
+    private double pressure;
+    private double wind;
     private int humidity;
     private String city;
-    public long time;
+    private String time;
     private int id;
     private long sunrise;
     private long sunset;
@@ -32,7 +34,7 @@ public class WeatherDTO {
         return sunset;
     }
 
-    public long getTime() {
+    public String getTime() {
         return time;
     }
 
@@ -85,28 +87,28 @@ public class WeatherDTO {
 
         }
 
-        public Builder setIcon(String icon){
+        public Builder setIcon(@NonNull String icon){
             WeatherDTO.this.icon = icon;
             return this;
         }
 
-        public Builder setTemperature(Double temp){
+        public Builder setTemperature(double temp){
             WeatherDTO.this.temperature = temp;
             return this;
         }
-        public Builder setMaxTemperature(Double temp){
+        public Builder setMaxTemperature(double temp){
             WeatherDTO.this.maxTemperature = temp;
             return this;
         }
-        public Builder setMinTemperature(Double temp){
+        public Builder setMinTemperature(double temp){
             WeatherDTO.this.minTemperature = temp;
             return this;
         }
-        public Builder setWind(Double wind){
+        public Builder setWind(double wind){
             WeatherDTO.this.wind = wind;
             return this;
         }
-        public Builder setPressure(Double pressure){
+        public Builder setPressure(double pressure){
             WeatherDTO.this.pressure = pressure;
             return this;
         }
@@ -116,9 +118,8 @@ public class WeatherDTO {
         }
         public Builder setCity(String city){
             WeatherDTO.this.city = city;
-            return this;
-        }
-        public Builder setTime(long time){
+            return this;        }
+        public Builder setTime(String time){
             WeatherDTO.this.time = time;
             return this;
         }
