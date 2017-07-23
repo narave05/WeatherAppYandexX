@@ -12,14 +12,12 @@ import android.util.Log;
 import com.chog0.weatherappyandexschool.Constants;
 import com.chog0.weatherappyandexschool.repository.RepositoryImpl;
 import com.evernote.android.job.Job;
-import com.evernote.android.job.JobManager;
 import com.evernote.android.job.JobRequest;
-import com.evernote.android.job.util.support.PersistableBundleCompat;
 
 import java.util.concurrent.TimeUnit;
 
 
-public class WeatherSyncJob extends Job{
+public class WeatherSyncJob extends Job {
 
     public static final String TAG = "Weather_job";
     private RepositoryImpl repository;
@@ -34,7 +32,7 @@ public class WeatherSyncJob extends Job{
         Log.d(TAG, "onRunJob: job is running");
 
         repository
-                .getWeather(Constants.MOSCOW_ID)
+                .getWeather(Constants.MOSCOW_LATITUDE, Constants.MOSCOW_LATITUDE)
                 .doOnError(Throwable::printStackTrace)
                 .subscribe(response -> {
                     repository.storeWeather(response);
@@ -43,6 +41,7 @@ public class WeatherSyncJob extends Job{
 
         return Result.SUCCESS;
     }
+
     public static void scheduleJob(int min) {
         new JobRequest.Builder(WeatherSyncJob.TAG)
                 .setPeriodic(TimeUnit.MINUTES.toMillis(min), TimeUnit.MINUTES.toMillis(5))

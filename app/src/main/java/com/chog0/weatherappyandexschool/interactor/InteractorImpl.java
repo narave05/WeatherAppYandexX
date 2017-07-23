@@ -10,11 +10,13 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.chog0.weatherappyandexschool.Constants;
-import com.chog0.weatherappyandexschool.R;
 import com.chog0.weatherappyandexschool.WeatherApp;
 import com.chog0.weatherappyandexschool.model.ResponseModel.ResponseWeather;
+import com.chog0.weatherappyandexschool.model.ResponseModel.place_detail.PlaceDetails;
+import com.chog0.weatherappyandexschool.model.ResponseModel.places_suggest.PlacesSuggest;
+import com.chog0.weatherappyandexschool.model.ResponseModel.places_suggest.Prediction;
+import com.chog0.weatherappyandexschool.model.app_model.CitySuggest;
 import com.chog0.weatherappyandexschool.model.app_model.WeatherDTO;
-import com.chog0.weatherappyandexschool.presentation.presenter.WeatherPresenter;
 import com.chog0.weatherappyandexschool.repository.RepositoryImpl;
 import com.chog0.weatherappyandexschool.settings.PreferencesManager;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -23,12 +25,16 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import javax.inject.Inject;
 
 import io.reactivex.Observable;
-import retrofit2.Response;
+import io.reactivex.Single;
+import io.reactivex.functions.Function;
+import io.reactivex.observers.DisposableSingleObserver;
+import io.reactivex.schedulers.Schedulers;
 
 
 public class InteractorImpl implements Interactor {
@@ -48,8 +54,8 @@ public class InteractorImpl implements Interactor {
     }
 
     @Override
-    public Observable<String> getWeather(@NonNull String cityId) {
-        return repository.getWeather(cityId);
+    public Observable<String> getWeather(float lat, float lon) {
+        return repository.getWeather(lat, lon);
     }
 
     @Override
@@ -72,6 +78,7 @@ public class InteractorImpl implements Interactor {
                 .setId(responseWeather.getWeather().get(0).getId())
                 .build();
     }
+
     @Override
     public void parseWeather(Callback callback) {
 
@@ -81,9 +88,44 @@ public class InteractorImpl implements Interactor {
         } catch (IOException e) {
             callback.onError(e.getMessage());
         }
-        callback.onSuccess(builWeather(responseWeather));
+        if (responseWeather != null) {
+            callback.onSuccess(builWeather(responseWeather));
+        } else {
+            // TODO: 22.07.2017
+            callback.onError("error");
+        }
 
     }
+
+    @Override
+    public Single<List<CitySuggest>> getCitySuggestList(String text) {
+        return repository.getPlacesSuggestList(text)
+                .map(new Function<PlacesSuggest, List<Prediction>>() {
+                    @Override
+                    public List<Prediction> apply(@io.reactivex.annotations.NonNull PlacesSuggest placesSuggest) throws Exception {
+                        return placesSuggest.predictions;
+                    }
+                })
+                .flatMapIterable(new Function<List<Prediction>, List<Prediction>>() {
+                    @Override
+                    public List<Prediction> apply(@io.reactivex.annotations.NonNull List<Prediction> predictions) throws Exception {
+                        return predictions;
+                    }
+                })
+                .map(new Function<Prediction, CitySuggest>() {
+                    @Override
+                    public CitySuggest apply(@io.reactivex.annotations.NonNull Prediction prediction) throws Exception {
+                        return new CitySuggest(prediction.placeId, prediction.description);
+                    }
+                })
+                .toList();
+    }
+
+    @Override
+    public Single<PlaceDetails> getPlaceDetails(String placeId) {
+        return repository.getPlaceDetails(placeId);
+    }
+
     private String timeFormated(long timeStamp) {
 
         DateFormat sdf = new SimpleDateFormat("dd.MM hh:mm:ss", Locale.getDefault());

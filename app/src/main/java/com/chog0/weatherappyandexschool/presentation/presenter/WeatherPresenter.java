@@ -15,16 +15,17 @@ import com.chog0.weatherappyandexschool.Constants;
 import com.chog0.weatherappyandexschool.WeatherApp;
 import com.chog0.weatherappyandexschool.interactor.Callback;
 import com.chog0.weatherappyandexschool.interactor.InteractorImpl;
-import com.chog0.weatherappyandexschool.model.ResponseModel.ResponseWeather;
+import com.chog0.weatherappyandexschool.model.app_model.CitySuggest;
 import com.chog0.weatherappyandexschool.model.app_model.WeatherDTO;
 import com.chog0.weatherappyandexschool.presentation.ui.WeatherView;
 
+import java.util.List;
 
 import javax.inject.Inject;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
-import retrofit2.Response;
 
 @InjectViewState
 public class WeatherPresenter extends MvpPresenter<WeatherView> {
@@ -39,8 +40,8 @@ public class WeatherPresenter extends MvpPresenter<WeatherView> {
         getViewState().setInfoToViews();
     }
 
-    public void getWeather(){
-        interactor.getWeather(Constants.MOSCOW_ID)
+    public void getWeather() {
+        interactor.getWeather(Constants.MOSCOW_LATITUDE, Constants.MOSCOW_LONGITUDE)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .onErrorReturn(e -> {
@@ -54,7 +55,23 @@ public class WeatherPresenter extends MvpPresenter<WeatherView> {
                 });
     }
 
-    public void parseWeatherFromSP(){
+    public void getCitySuggestList(String text) {
+        interactor.getCitySuggestList(text)
+                .subscribeOn(Schedulers.io())
+                .subscribe(new DisposableSingleObserver<List<CitySuggest>>() {
+                    @Override
+                    public void onSuccess(List<CitySuggest> citySuggests) {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+                });
+    }
+
+    public void parseWeatherFromSP() {
 
         interactor.parseWeather(new Callback() {
             @Override

@@ -17,6 +17,8 @@ android {
         archivesBaseName = "app-${versions.name}-${versions.code}"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
+        multiDexEnabled true
+
     }
     signingConfigs {
         release {

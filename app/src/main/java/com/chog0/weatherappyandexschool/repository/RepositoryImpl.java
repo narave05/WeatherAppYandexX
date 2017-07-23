@@ -10,19 +10,25 @@ import android.support.annotation.NonNull;
 
 import com.chog0.weatherappyandexschool.Constants;
 import com.chog0.weatherappyandexschool.WeatherApp;
-import com.chog0.weatherappyandexschool.model.ResponseModel.ResponseWeather;
+import com.chog0.weatherappyandexschool.model.ResponseModel.places_suggest.PlacesSuggest;
+import com.chog0.weatherappyandexschool.model.ResponseModel.place_detail.PlaceDetails;
 import com.chog0.weatherappyandexschool.settings.PreferencesManager;
+import com.chog0.weatherappyandexschool.web.PlaceApi;
 import com.chog0.weatherappyandexschool.web.WeatherApi;
 
 import javax.inject.Inject;
 
+import io.reactivex.Flowable;
 import io.reactivex.Observable;
-import retrofit2.Response;
+import io.reactivex.Single;
 
 public class RepositoryImpl implements Repository {
 
     @Inject
     WeatherApi weatherApi;
+
+    @Inject
+    PlaceApi placeApi;
 
     @Inject
     PreferencesManager preferencesManager;
@@ -32,8 +38,8 @@ public class RepositoryImpl implements Repository {
     }
 
     @Override
-    public Observable<String> getWeather(@NonNull String cityId) {
-        return weatherApi.getCurrentWeather(cityId, Constants.API_KEY);
+    public Observable<String> getWeather(float lat, float lon) {
+        return weatherApi.getCurrentWeather(Constants.API_KEY, lat, lon);
     }
 
     @Override
@@ -49,6 +55,16 @@ public class RepositoryImpl implements Repository {
     @Override
     public int getWeatherUpdatePeriod() {
         return preferencesManager.getPeriod();
+    }
+
+    @Override
+    public Flowable<PlacesSuggest> getPlacesSuggestList(String text) {
+        return placeApi.getPlacesSuggestList(Constants.GOOGLE_PLACE_API_ID, Constants.PLACE_TYPES, text);
+    }
+
+    @Override
+    public Single<PlaceDetails> getPlaceDetails(String placeId) {
+        return placeApi.getPlaceDetails(Constants.GOOGLE_PLACE_API_ID, placeId);
     }
 
 }

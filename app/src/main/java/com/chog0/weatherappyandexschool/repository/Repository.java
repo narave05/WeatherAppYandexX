@@ -8,18 +8,24 @@ package com.chog0.weatherappyandexschool.repository;
 
 import android.support.annotation.NonNull;
 
-import com.chog0.weatherappyandexschool.model.ResponseModel.ResponseWeather;
+import com.chog0.weatherappyandexschool.model.ResponseModel.places_suggest.PlacesSuggest;
+import com.chog0.weatherappyandexschool.model.ResponseModel.place_detail.PlaceDetails;
 
+import io.reactivex.Flowable;
 import io.reactivex.Observable;
-import okhttp3.ResponseBody;
-import retrofit2.Response;
+import io.reactivex.Single;
 
 public interface Repository {
 
-    Observable<String> getWeather(@NonNull String cityId);
+    Observable<String> getWeather(float lat, float lon);
+
     void storeWeather(@NonNull String response);
 
     void setWeatherUpdatePeriod(int period);
+
     int getWeatherUpdatePeriod();
 
+    Flowable<PlacesSuggest> getPlacesSuggestList(String text);
+
+    Single<PlaceDetails> getPlaceDetails(String placeId);
 }
