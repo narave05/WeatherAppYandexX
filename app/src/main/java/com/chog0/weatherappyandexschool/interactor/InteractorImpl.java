@@ -7,13 +7,12 @@ package com.chog0.weatherappyandexschool.interactor;
 
 
 import android.support.annotation.NonNull;
+import android.support.v4.util.Pair;
 import android.util.Log;
 
-import com.chog0.weatherappyandexschool.Constants;
 import com.chog0.weatherappyandexschool.WeatherApp;
 import com.chog0.weatherappyandexschool.model.ResponseModel.ResponseWeather;
 import com.chog0.weatherappyandexschool.model.ResponseModel.place_detail.PlaceDetails;
-import com.chog0.weatherappyandexschool.model.ResponseModel.places_suggest.PlacesSuggest;
 import com.chog0.weatherappyandexschool.model.ResponseModel.places_suggest.Prediction;
 import com.chog0.weatherappyandexschool.model.app_model.CitySuggest;
 import com.chog0.weatherappyandexschool.model.app_model.WeatherDTO;
@@ -30,10 +29,12 @@ import java.util.Locale;
 
 import javax.inject.Inject;
 
+import io.reactivex.Completable;
 import io.reactivex.Observable;
 import io.reactivex.Single;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
-import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
 
 
@@ -54,7 +55,11 @@ public class InteractorImpl implements Interactor {
     }
 
     @Override
-    public Observable<String> getWeather(float lat, float lon) {
+    public Observable<String> getWeather() {
+        Pair<Float, Float> cityGeoCodes = preferencesManager.getCurrentCityGeoCodes();
+        float lat = cityGeoCodes.first;
+        float lon = cityGeoCodes.second;
+        Log.e("cityGeoCodes", "getWeather: " + lat + " : " + lon);
         return repository.getWeather(lat, lon);
     }
 
@@ -66,7 +71,7 @@ public class InteractorImpl implements Interactor {
     private WeatherDTO builWeather(@NonNull ResponseWeather responseWeather) {
 
         return WeatherDTO.newBuilder()
-                .setCity(Constants.MOSCOW_ID)
+                .setCity(responseWeather.getName())
                 .setIcon(responseWeather.getWeather().get(0).getIcon())
                 .setTemperature(responseWeather.getMainInfo().getTemp() - K)
                 .setMaxTemperature(responseWeather.getMainInfo().getTempMax() - K)
@@ -100,30 +105,33 @@ public class InteractorImpl implements Interactor {
     @Override
     public Single<List<CitySuggest>> getCitySuggestList(String text) {
         return repository.getPlacesSuggestList(text)
-                .map(new Function<PlacesSuggest, List<Prediction>>() {
-                    @Override
-                    public List<Prediction> apply(@io.reactivex.annotations.NonNull PlacesSuggest placesSuggest) throws Exception {
-                        return placesSuggest.predictions;
-                    }
-                })
+                .map(placesSuggest -> placesSuggest.predictions)
                 .flatMapIterable(new Function<List<Prediction>, List<Prediction>>() {
                     @Override
                     public List<Prediction> apply(@io.reactivex.annotations.NonNull List<Prediction> predictions) throws Exception {
                         return predictions;
                     }
                 })
-                .map(new Function<Prediction, CitySuggest>() {
-                    @Override
-                    public CitySuggest apply(@io.reactivex.annotations.NonNull Prediction prediction) throws Exception {
-                        return new CitySuggest(prediction.placeId, prediction.description);
-                    }
-                })
+                .map(prediction -> new CitySuggest(prediction.placeId, prediction.description))
                 .toList();
     }
 
     @Override
-    public Single<PlaceDetails> getPlaceDetails(String placeId) {
-        return repository.getPlaceDetails(placeId);
+    public Single<Pair<Float,Float>> getPlaceDetails(String placeId) {
+        return repository.getPlaceDetails(placeId)
+                .map(new Function<PlaceDetails, Pair<Float, Float>>() {
+                    @Override
+                    public Pair<Float, Float> apply(@io.reactivex.annotations.NonNull PlaceDetails placeDetails) throws Exception {
+                        float lat = placeDetails.getLat();
+                        float lon = placeDetails.getLng();
+                        return new Pair<>(lat,lon);
+                    }
+                });
+    }
+
+    @Override
+    public void saveCurrentCityGeoCodes(float lat, float lon) {
+        preferencesManager.saveCurrentCityGeoCodes(lat, lon);
     }
 
     private String timeFormated(long timeStamp) {

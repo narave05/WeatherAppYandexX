@@ -9,10 +9,14 @@ package com.chog0.weatherappyandexschool.presentation.ui;
 import android.support.annotation.NonNull;
 
 import com.arellomobile.mvp.MvpView;
+import com.arellomobile.mvp.viewstate.strategy.OneExecutionStateStrategy;
+import com.arellomobile.mvp.viewstate.strategy.StateStrategyType;
 import com.chog0.weatherappyandexschool.model.app_model.WeatherDTO;
 
 public interface WeatherView extends MvpView{
     void showData(@NonNull WeatherDTO weatherDTO);
     void showError(@NonNull String e);
     void setInfoToViews();
+    @StateStrategyType(OneExecutionStateStrategy.class)
+    void openSearchScreen();
 }

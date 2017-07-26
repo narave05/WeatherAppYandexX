@@ -7,6 +7,7 @@ package com.chog0.weatherappyandexschool.di;
 
 import com.chog0.weatherappyandexschool.WeatherApp;
 import com.chog0.weatherappyandexschool.interactor.InteractorImpl;
+import com.chog0.weatherappyandexschool.presentation.presenter.SearchPresenter;
 import com.chog0.weatherappyandexschool.presentation.presenter.SettingsPresenter;
 import com.chog0.weatherappyandexschool.presentation.presenter.WeatherPresenter;
 import com.chog0.weatherappyandexschool.presentation.ui.fragment.SettingsFragment;
@@ -26,6 +27,7 @@ public interface AppComponent {
     void inject(PreferencesManager preferencesManager);
     void inject(RepositoryImpl repository);
     void inject(WeatherPresenter weatherPresenter);
+    void inject(SearchPresenter searchPresenter);
     void inject(SettingsPresenter presenter);
     void inject(WeatherApp weatherApp);
     void inject(SettingsFragment settingsFragment);

@@ -5,4 +5,6 @@
     <color name="colorAccent">#E4D21A</color>
     <color name="white">#FAF7F8</color>
     <color name="blue">#8AA2A5</color>
+    <color name="suggest_list_item_color">#f6f5f3</color>
+    <color name="line_color">#e4e4e4</color>
 </resources>

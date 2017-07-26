@@ -68,4 +68,12 @@ public class PlaceDetails {
         this.additionalProperties.put(name, value);
     }
 
+    public float getLat(){
+        return result.getGeometry().getLocation().getLat();
+    }
+
+    public float getLng(){
+        return result.getGeometry().getLocation().getLng();
+    }
+
 }

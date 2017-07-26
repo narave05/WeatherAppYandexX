@@ -10,6 +10,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.v4.util.Pair;
+import android.util.Log;
 
 import com.chog0.weatherappyandexschool.Constants;
 import com.chog0.weatherappyandexschool.WeatherApp;
@@ -18,8 +19,7 @@ public class PreferencesManager {
     private static final String RESPONSE = "RESPONSE";
     private static final String PERIOD = "PERIOD";
     private static final String ID = "ID";
-    private static final String CURRENT_CITY_LAT = "CURRENT_CITY_LAT";
-    private static final String CURRENT_CITY_LON = "CURRENT_CITY_LAT";
+    private static final String CURRENT_CITY_CODES = "CURRENT_CITY_CODES";
     public static final int DONT_UPDATE_BUTTON_ID = 2131558554;
 
     private SharedPreferences sharedPreferences;
@@ -60,15 +60,17 @@ public class PreferencesManager {
 
     public void saveCurrentCityGeoCodes(float lat, float lon) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putFloat(CURRENT_CITY_LAT, lat);
-        editor.putFloat(CURRENT_CITY_LON, lon);
+        editor.putString(CURRENT_CITY_CODES, lat + " " + lon);
         editor.apply();
     }
 
-    public Pair<Float,Float> getCurrentCityGeoCodes() {
-        float lat = sharedPreferences.getFloat(CURRENT_CITY_LAT, Constants.MOSCOW_LATITUDE);
-        float lon = sharedPreferences.getFloat(CURRENT_CITY_LON, Constants.MOSCOW_LONGITUDE);
-        return new Pair<>(lat,lon);
+    public Pair<Float, Float> getCurrentCityGeoCodes() {
+        String[] temp = sharedPreferences
+                .getString(CURRENT_CITY_CODES, Constants.MOSCOW_LATITUDE + " " + Constants.MOSCOW_LONGITUDE)
+                .split("\\s+");
+        float lat = Float.parseFloat(temp[0]);
+        float lon = Float.parseFloat(temp[1]);
+        return new Pair<>(lat, lon);
     }
 
 }

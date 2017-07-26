@@ -6,26 +6,29 @@ package com.chog0.weatherappyandexschool.presentation.presenter;
  */
 
 
+import android.app.Activity;
+import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.v4.util.Pair;
 import android.util.Log;
 
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
-import com.chog0.weatherappyandexschool.Constants;
 import com.chog0.weatherappyandexschool.WeatherApp;
 import com.chog0.weatherappyandexschool.interactor.Callback;
 import com.chog0.weatherappyandexschool.interactor.InteractorImpl;
-import com.chog0.weatherappyandexschool.model.app_model.CitySuggest;
 import com.chog0.weatherappyandexschool.model.app_model.WeatherDTO;
 import com.chog0.weatherappyandexschool.presentation.ui.WeatherView;
-
-import java.util.List;
+import com.chog0.weatherappyandexschool.presentation.ui.fragment.WeatherFragment;
 
 import javax.inject.Inject;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
+
+import static com.chog0.weatherappyandexschool.presentation.ui.activity.SearchActivity.PLACE_ID_INTENT_KEY;
 
 @InjectViewState
 public class WeatherPresenter extends MvpPresenter<WeatherView> {
@@ -35,13 +38,15 @@ public class WeatherPresenter extends MvpPresenter<WeatherView> {
     @Inject
     InteractorImpl interactor;
 
+    private CompositeDisposable compositeDisposable = new CompositeDisposable();
+
     public WeatherPresenter() {
         WeatherApp.getAppComponent().inject(this);
         getViewState().setInfoToViews();
     }
 
     public void getWeather() {
-        interactor.getWeather(Constants.MOSCOW_LATITUDE, Constants.MOSCOW_LONGITUDE)
+        interactor.getWeather()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .onErrorReturn(e -> {
@@ -55,21 +60,6 @@ public class WeatherPresenter extends MvpPresenter<WeatherView> {
                 });
     }
 
-    public void getCitySuggestList(String text) {
-        interactor.getCitySuggestList(text)
-                .subscribeOn(Schedulers.io())
-                .subscribe(new DisposableSingleObserver<List<CitySuggest>>() {
-                    @Override
-                    public void onSuccess(List<CitySuggest> citySuggests) {
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-                });
-    }
 
     public void parseWeatherFromSP() {
 
@@ -95,4 +85,43 @@ public class WeatherPresenter extends MvpPresenter<WeatherView> {
         getViewState().showError(e);
     }
 
+    public void handleOnActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == Activity.RESULT_OK && requestCode == WeatherFragment.REQUEST_CODE) {
+            if (data != null) {
+                String placeId = data.getStringExtra(PLACE_ID_INTENT_KEY);
+                getPlaceDetails(placeId);
+            }
+        }
+    }
+
+    private void getPlaceDetails(String placeId) {
+        compositeDisposable.add(
+                interactor.getPlaceDetails(placeId)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribeWith(new DisposableSingleObserver<Pair<Float, Float>>() {
+                            @Override
+                            public void onSuccess(Pair<Float, Float> pair) {
+                                float lat = pair.first;
+                                float lon = pair.second;
+                                interactor.saveCurrentCityGeoCodes(lat,lon);
+                                getWeather();
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+
+                            }
+                        }));
+    }
+
+    public void onSearchClick() {
+        getViewState().openSearchScreen();
+    }
+
+    @Override
+    public void onDestroy() {
+        compositeDisposable.dispose();
+        super.onDestroy();
+    }
 }

@@ -17,6 +17,7 @@ android {
         archivesBaseName = "app-${versions.name}-${versions.code}"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
+        vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
 
     }
@@ -83,6 +84,7 @@ dependencies {
     compile libraries.rxjava
     compile libraries.rxandroid
     compile libraries.rxadapter
+    compile libraries.rxbinding
 
     //android job
     compile libraries.androidJob

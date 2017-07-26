@@ -19,4 +19,6 @@
     <string name="_1_hour">1 час</string>
     <string name="weather_update">Обновление погоды</string>
     <string name="dont_update">Только вручную</string>
+    <string name="search_hint_text">Hайти город </string>
+    <string name="error_text">ошибка</string>
 </resources>
