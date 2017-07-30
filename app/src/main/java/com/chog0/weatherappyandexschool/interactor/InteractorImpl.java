@@ -106,7 +106,6 @@ public class InteractorImpl implements Interactor {
             callback.onSuccess(builWeather(responseWeather));
             return;
         } else {
-            // TODO: 22.07.2017
             callback.onError("error");
         }
 
