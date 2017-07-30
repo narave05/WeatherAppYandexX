@@ -7,14 +7,16 @@ package com.chog0.weatherappyandexschool.interactor;
 
 
 import android.support.annotation.NonNull;
+import android.support.annotation.VisibleForTesting;
+import android.support.v4.util.Pair;
 import android.util.Log;
 
-import com.chog0.weatherappyandexschool.Constants;
-import com.chog0.weatherappyandexschool.R;
 import com.chog0.weatherappyandexschool.WeatherApp;
 import com.chog0.weatherappyandexschool.model.ResponseModel.ResponseWeather;
+import com.chog0.weatherappyandexschool.model.ResponseModel.place_detail.PlaceDetails;
+import com.chog0.weatherappyandexschool.model.ResponseModel.places_suggest.Prediction;
+import com.chog0.weatherappyandexschool.model.app_model.CitySuggest;
 import com.chog0.weatherappyandexschool.model.app_model.WeatherDTO;
-import com.chog0.weatherappyandexschool.presentation.presenter.WeatherPresenter;
 import com.chog0.weatherappyandexschool.repository.RepositoryImpl;
 import com.chog0.weatherappyandexschool.settings.PreferencesManager;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -23,12 +25,20 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import javax.inject.Inject;
 
+import io.reactivex.Completable;
 import io.reactivex.Observable;
-import retrofit2.Response;
+import io.reactivex.Single;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
+import io.reactivex.schedulers.Schedulers;
+
+import static android.support.annotation.VisibleForTesting.NONE;
 
 
 public class InteractorImpl implements Interactor {
@@ -47,9 +57,19 @@ public class InteractorImpl implements Interactor {
         WeatherApp.getAppComponent().inject(this);
     }
 
+    @VisibleForTesting(otherwise = NONE)
+    public InteractorImpl(RepositoryImpl repository, PreferencesManager preferencesManager) {
+        this.repository = repository;
+        this.preferencesManager = preferencesManager;
+    }
+
+
     @Override
-    public Observable<String> getWeather(@NonNull String cityId) {
-        return repository.getWeather(cityId);
+    public Observable<String> getWeather() {
+        Pair<Float, Float> cityGeoCodes = preferencesManager.getCurrentCityGeoCodes();
+        float lat = cityGeoCodes.first;
+        float lon = cityGeoCodes.second;
+        return repository.getWeather(lat, lon);
     }
 
     @Override
@@ -57,10 +77,10 @@ public class InteractorImpl implements Interactor {
         repository.storeWeather(response);
     }
 
-    private WeatherDTO builWeather(@NonNull ResponseWeather responseWeather) {
+    public WeatherDTO builWeather(@NonNull ResponseWeather responseWeather) {
 
         return WeatherDTO.newBuilder()
-                .setCity(Constants.MOSCOW_ID)
+                .setCity(responseWeather.getName())
                 .setIcon(responseWeather.getWeather().get(0).getIcon())
                 .setTemperature(responseWeather.getMainInfo().getTemp() - K)
                 .setMaxTemperature(responseWeather.getMainInfo().getTempMax() - K)
@@ -72,6 +92,7 @@ public class InteractorImpl implements Interactor {
                 .setId(responseWeather.getWeather().get(0).getId())
                 .build();
     }
+
     @Override
     public void parseWeather(Callback callback) {
 
@@ -81,11 +102,45 @@ public class InteractorImpl implements Interactor {
         } catch (IOException e) {
             callback.onError(e.getMessage());
         }
-        callback.onSuccess(builWeather(responseWeather));
+        if (responseWeather != null) {
+            callback.onSuccess(builWeather(responseWeather));
+            return;
+        } else {
+            callback.onError("error");
+        }
 
     }
-    private String timeFormated(long timeStamp) {
 
+    @Override
+    public Single<List<CitySuggest>> getCitySuggestList(String text) {
+        return repository.getPlacesSuggestList(text)
+                .map(placesSuggest -> placesSuggest.predictions)
+                .flatMapIterable(new Function<List<Prediction>, List<Prediction>>() {
+                    @Override
+                    public List<Prediction> apply(@io.reactivex.annotations.NonNull List<Prediction> predictions) throws Exception {
+                        return predictions;
+                    }
+                })
+                .map(prediction -> new CitySuggest(prediction.placeId, prediction.description))
+                .toList();
+    }
+
+    @Override
+    public Single<Pair<Float,Float>> getPlaceDetails(String placeId) {
+        return repository.getPlaceDetails(placeId)
+                .map(placeDetails -> {
+                    float lat = placeDetails.getLat();
+                    float lon = placeDetails.getLng();
+                    return new Pair<>(lat,lon);
+                });
+    }
+
+    @Override
+    public void saveCurrentCityGeoCodes(float lat, float lon) {
+        preferencesManager.saveCurrentCityGeoCodes(lat, lon);
+    }
+
+    public String timeFormated(long timeStamp) {
         DateFormat sdf = new SimpleDateFormat("dd.MM hh:mm:ss", Locale.getDefault());
         Date netDate = (new Date(timeStamp));
         return sdf.format(netDate);

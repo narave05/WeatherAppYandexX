@@ -5,6 +5,8 @@ package com.chog0.weatherappyandexschool.di;
  * @since 0.1
  */
 
+import com.chog0.weatherappyandexschool.Constants;
+import com.chog0.weatherappyandexschool.web.PlaceApi;
 import com.chog0.weatherappyandexschool.web.WeatherApi;
 
 import java.util.concurrent.TimeUnit;
@@ -29,7 +31,7 @@ public class NetworkModule {
 
     @Singleton
     @Provides
-    public Retrofit provideRetrofit() {
+    public OkHttpClient provideOkHttpClient() {
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
         logging.setLevel(HttpLoggingInterceptor.Level.BODY);
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
@@ -37,18 +39,30 @@ public class NetworkModule {
         httpClient.connectTimeout(MAX_CONNECT_TIMEOUT, TimeUnit.MILLISECONDS);
         httpClient.readTimeout(MAX_READ_TIMEOUT, TimeUnit.MILLISECONDS);
         httpClient.addInterceptor(logging);
-        return new Retrofit.Builder()
-
-                .baseUrl("http://api.openweathermap.org/data/2.5/")
-                .addConverterFactory(ScalarsConverterFactory.create())
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .client(httpClient.build())
-                .build();
+        return httpClient.build();
     }
 
     @Singleton
     @Provides
-    public WeatherApi provideWeatherApi (Retrofit retrofit){
-        return retrofit.create(WeatherApi.class);
+    public WeatherApi provideWeatherApi(OkHttpClient okHttpClient) {
+        return new Retrofit.Builder()
+                .addConverterFactory(ScalarsConverterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .client(okHttpClient)
+                .baseUrl(Constants.WEATHER_BASE_URL)
+                .build()
+                .create(WeatherApi.class);
+    }
+
+    @Singleton
+    @Provides
+    public PlaceApi providePlaceApi(OkHttpClient okHttpClient) {
+        return new Retrofit.Builder()
+                .addConverterFactory(JacksonConverterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .client(okHttpClient)
+                .baseUrl(Constants.GOOGLE_PLACE_BASE_URL)
+                .build()
+                .create(PlaceApi.class);
     }
 }

@@ -74,10 +74,10 @@ public class WeatherDTO {
         return wind;
     }
 
-
     public int getHumidity() {
         return humidity;
     }
+
     public static Builder newBuilder(){
         return new WeatherDTO().new Builder();
     }

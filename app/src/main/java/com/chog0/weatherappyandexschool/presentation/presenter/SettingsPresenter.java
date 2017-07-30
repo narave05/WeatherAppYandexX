@@ -5,6 +5,8 @@ package com.chog0.weatherappyandexschool.presentation.presenter;
  * @since 0.1
  */
 
+import android.support.annotation.VisibleForTesting;
+
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
 import com.chog0.weatherappyandexschool.WeatherApp;
@@ -16,6 +18,8 @@ import com.chog0.weatherappyandexschool.settings.PreferencesManager;
 import com.evernote.android.job.JobManager;
 
 import javax.inject.Inject;
+
+import static android.support.annotation.VisibleForTesting.NONE;
 
 @InjectViewState
 public class SettingsPresenter  extends MvpPresenter<SettingsView> {
@@ -29,6 +33,13 @@ public class SettingsPresenter  extends MvpPresenter<SettingsView> {
     public SettingsPresenter() {
         WeatherApp.getAppComponent().inject(this);
     }
+
+    @VisibleForTesting(otherwise = NONE)
+    public SettingsPresenter(PreferencesManager preferencesManager, RepositoryImpl repository) {
+        this.preferencesManager = preferencesManager;
+        this.repository = repository;
+    }
+
 
     public void getRadioButtonId(){
         getViewState().setRadioButton(preferencesManager.getRadioButtonId());

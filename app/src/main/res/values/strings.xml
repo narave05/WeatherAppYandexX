@@ -40,8 +40,7 @@
     <string name="_1_hour">1 hour</string>
     <string name="weather_update">Weather update</string>
     <string name="dont_update">Do not update</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="search_hint_text">Find city</string>
+    <string name="error_text">error</string>
 
 </resources>

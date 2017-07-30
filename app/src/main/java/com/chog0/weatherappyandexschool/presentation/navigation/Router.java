@@ -7,10 +7,10 @@ package com.chog0.weatherappyandexschool.presentation.navigation;
 
 
 import android.support.annotation.NonNull;
+import android.support.annotation.VisibleForTesting;
 
 public interface Router<T> {
 
     void pushFragment(@NonNull T fragment);
     void openFirstFragment(@NonNull T fragment);
-
 }
