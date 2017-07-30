@@ -16,4 +16,23 @@ public class CitySuggest {
     public String getDescription() {
         return description;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof CitySuggest)) return false;
+
+        CitySuggest suggest = (CitySuggest) o;
+
+        if (!getPlaceId().equals(suggest.getPlaceId())) return false;
+        return getDescription().equals(suggest.getDescription());
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getPlaceId().hashCode();
+        result = 31 * result + getDescription().hashCode();
+        return result;
+    }
 }

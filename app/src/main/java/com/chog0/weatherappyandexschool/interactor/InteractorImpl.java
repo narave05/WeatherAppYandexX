@@ -7,6 +7,7 @@ package com.chog0.weatherappyandexschool.interactor;
 
 
 import android.support.annotation.NonNull;
+import android.support.annotation.VisibleForTesting;
 import android.support.v4.util.Pair;
 import android.util.Log;
 
@@ -37,6 +38,8 @@ import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
+import static android.support.annotation.VisibleForTesting.NONE;
+
 
 public class InteractorImpl implements Interactor {
 
@@ -54,12 +57,18 @@ public class InteractorImpl implements Interactor {
         WeatherApp.getAppComponent().inject(this);
     }
 
+    @VisibleForTesting(otherwise = NONE)
+    public InteractorImpl(RepositoryImpl repository, PreferencesManager preferencesManager) {
+        this.repository = repository;
+        this.preferencesManager = preferencesManager;
+    }
+
+
     @Override
     public Observable<String> getWeather() {
         Pair<Float, Float> cityGeoCodes = preferencesManager.getCurrentCityGeoCodes();
         float lat = cityGeoCodes.first;
         float lon = cityGeoCodes.second;
-        Log.e("cityGeoCodes", "getWeather: " + lat + " : " + lon);
         return repository.getWeather(lat, lon);
     }
 
@@ -68,7 +77,7 @@ public class InteractorImpl implements Interactor {
         repository.storeWeather(response);
     }
 
-    private WeatherDTO builWeather(@NonNull ResponseWeather responseWeather) {
+    public WeatherDTO builWeather(@NonNull ResponseWeather responseWeather) {
 
         return WeatherDTO.newBuilder()
                 .setCity(responseWeather.getName())
@@ -95,6 +104,7 @@ public class InteractorImpl implements Interactor {
         }
         if (responseWeather != null) {
             callback.onSuccess(builWeather(responseWeather));
+            return;
         } else {
             // TODO: 22.07.2017
             callback.onError("error");
@@ -119,13 +129,10 @@ public class InteractorImpl implements Interactor {
     @Override
     public Single<Pair<Float,Float>> getPlaceDetails(String placeId) {
         return repository.getPlaceDetails(placeId)
-                .map(new Function<PlaceDetails, Pair<Float, Float>>() {
-                    @Override
-                    public Pair<Float, Float> apply(@io.reactivex.annotations.NonNull PlaceDetails placeDetails) throws Exception {
-                        float lat = placeDetails.getLat();
-                        float lon = placeDetails.getLng();
-                        return new Pair<>(lat,lon);
-                    }
+                .map(placeDetails -> {
+                    float lat = placeDetails.getLat();
+                    float lon = placeDetails.getLng();
+                    return new Pair<>(lat,lon);
                 });
     }
 
@@ -134,8 +141,7 @@ public class InteractorImpl implements Interactor {
         preferencesManager.saveCurrentCityGeoCodes(lat, lon);
     }
 
-    private String timeFormated(long timeStamp) {
-
+    public String timeFormated(long timeStamp) {
         DateFormat sdf = new SimpleDateFormat("dd.MM hh:mm:ss", Locale.getDefault());
         Date netDate = (new Date(timeStamp));
         return sdf.format(netDate);

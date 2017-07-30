@@ -7,20 +7,24 @@ package com.chog0.weatherappyandexschool.repository;
 
 
 import android.support.annotation.NonNull;
+import android.support.annotation.VisibleForTesting;
 
 import com.chog0.weatherappyandexschool.Constants;
 import com.chog0.weatherappyandexschool.WeatherApp;
-import com.chog0.weatherappyandexschool.model.ResponseModel.places_suggest.PlacesSuggest;
 import com.chog0.weatherappyandexschool.model.ResponseModel.place_detail.PlaceDetails;
+import com.chog0.weatherappyandexschool.model.ResponseModel.places_suggest.PlacesSuggest;
 import com.chog0.weatherappyandexschool.settings.PreferencesManager;
 import com.chog0.weatherappyandexschool.web.PlaceApi;
 import com.chog0.weatherappyandexschool.web.WeatherApi;
 
 import javax.inject.Inject;
 
+import butterknife.internal.ListenerClass;
 import io.reactivex.Flowable;
 import io.reactivex.Observable;
 import io.reactivex.Single;
+
+import static android.support.annotation.VisibleForTesting.NONE;
 
 public class RepositoryImpl implements Repository {
 
@@ -35,6 +39,13 @@ public class RepositoryImpl implements Repository {
 
     public RepositoryImpl() {
         WeatherApp.getAppComponent().inject(this);
+    }
+
+    @VisibleForTesting(otherwise = NONE)
+    public RepositoryImpl(WeatherApi weatherApi, PlaceApi placeApi, PreferencesManager preferencesManager) {
+        this.weatherApi = weatherApi;
+        this.placeApi = placeApi;
+        this.preferencesManager = preferencesManager;
     }
 
     @Override

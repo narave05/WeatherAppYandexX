@@ -9,6 +9,7 @@ package com.chog0.weatherappyandexschool.presentation.presenter;
 import android.app.Activity;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.annotation.VisibleForTesting;
 import android.support.v4.util.Pair;
 import android.util.Log;
 
@@ -28,6 +29,7 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
 
+import static android.support.annotation.VisibleForTesting.NONE;
 import static com.chog0.weatherappyandexschool.presentation.ui.activity.SearchActivity.PLACE_ID_INTENT_KEY;
 
 @InjectViewState
@@ -43,6 +45,11 @@ public class WeatherPresenter extends MvpPresenter<WeatherView> {
     public WeatherPresenter() {
         WeatherApp.getAppComponent().inject(this);
         getViewState().setInfoToViews();
+    }
+
+    @VisibleForTesting(otherwise = NONE)
+    public WeatherPresenter(InteractorImpl interactor) {
+        this.interactor = interactor;
     }
 
     public void getWeather() {
@@ -76,12 +83,12 @@ public class WeatherPresenter extends MvpPresenter<WeatherView> {
         });
     }
 
-    public void showWeather(@NonNull WeatherDTO weatherDTO) {
+    private void showWeather(@NonNull WeatherDTO weatherDTO) {
         getViewState().showData(weatherDTO);
 
     }
 
-    public void showError(@NonNull String e) {
+    private void showError(@NonNull String e) {
         getViewState().showError(e);
     }
 

@@ -1,6 +1,7 @@
 package com.chog0.weatherappyandexschool.presentation.presenter;
 
 import android.os.Handler;
+import android.support.annotation.VisibleForTesting;
 
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
@@ -20,6 +21,8 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
 
+import static android.support.annotation.VisibleForTesting.NONE;
+
 @InjectViewState
 public class SearchPresenter extends MvpPresenter<SearchView> {
 
@@ -28,10 +31,17 @@ public class SearchPresenter extends MvpPresenter<SearchView> {
     @Inject
     InteractorImpl interactor;
 
-    private CompositeDisposable compositeDisposable = new CompositeDisposable();
+    private CompositeDisposable compositeDisposable;
 
     public SearchPresenter() {
         WeatherApp.getAppComponent().inject(this);
+        compositeDisposable = new CompositeDisposable();
+    }
+
+    @VisibleForTesting(otherwise = NONE)
+    public SearchPresenter(InteractorImpl interactor) {
+        this.interactor = interactor;
+        compositeDisposable = new CompositeDisposable();
     }
 
     public void init() {
@@ -46,7 +56,7 @@ public class SearchPresenter extends MvpPresenter<SearchView> {
         }
     }
 
-    private void getCitySuggestList(String text) {
+    public void getCitySuggestList(String text) {
         getViewState().showProgress();
         compositeDisposable.add(
                 interactor.getCitySuggestList(text)
